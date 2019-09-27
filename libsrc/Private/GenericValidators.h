@@ -50,9 +50,9 @@ QString _class::validate(const QVariant& _value, const QString& _fieldName){ \
     return Regex.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);\
 }
 
-#define CONDITIONAL_VALIDATOR_IMPL(_class, _precondition, _falseCondition) \
+#define CONDITIONAL_VALIDATOR_IMPL(_class, _precondition, _wasOk) \
     QString _class::validate(const QVariant& _value, const QString& _fieldName) { \
-        _precondition; return _falseCondition ? createErrorString(_class, _fieldName) : QString(); \
+        _precondition; return _wasOk ? QString() : createErrorString(_class, _fieldName); \
     }
 
 DEFINE_GENERIC_VALIDATOR(asciiAlNum);

@@ -478,8 +478,8 @@ QString idCard::validate(const QVariant& _value, const QString& _fieldName)
     return "Not implemented Yet";
 }
 
-CONDITIONAL_VALIDATOR_IMPL(postalCode, , Private::PostalCodeValidators.value(this->Code).match(_value.toString()).hasMatch() == false)
-CONDITIONAL_VALIDATOR_IMPL(languageCode, , ISO639isValid(_value.toString().toLatin1().constData()) == false)
+CONDITIONAL_VALIDATOR_IMPL(postalCode, , Private::PostalCodeValidators.value(this->Code).match(_value.toString()).hasMatch())
+CONDITIONAL_VALIDATOR_IMPL(languageCode, , ISO639isValid(_value.toString().toLatin1().constData()))
 
 }
 

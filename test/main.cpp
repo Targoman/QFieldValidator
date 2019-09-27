@@ -33,12 +33,15 @@ int main(int argc, char *argv[])
 
     QFieldValidator v;
 
-    qDebug()<<v.md5().isValid("ffsdfdsfdsf", "fdfds");
+    qDebug()<<v.hasKey("1234").isValid("{\"12345\":{\"1234\":1234}}");
+
+    /*qDebug()<<v.md5().isValid("ffsdfdsfdsf", "fdfds");
     qDebug()<<v.errorMessage();v.reset();
     qDebug()<<v.md5().isValid("abcderf");
     qDebug()<<v.errorMessage();v.reset();
     qDebug()<<v.hex().isValid("abcdef","dfds");
     qDebug()<<v.errorMessage();v.reset();
+    */
     return 0;
 }
 

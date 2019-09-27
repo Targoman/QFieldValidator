@@ -31,6 +31,7 @@ class UnitTest: public QObject
 
 private slots:
     void GenericValidators();
+    void ObjectValidators();
     void EmailValidators();
     void BankValidators();
     void CountryBasedValidators();

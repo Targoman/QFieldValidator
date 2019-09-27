@@ -28,31 +28,34 @@
 
 namespace Validators{
 
-REGEX_BASED_VALIDATOR_IMPL(asciiAlNum,   QRegularExpression("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption));
+REGEX_BASED_VALIDATOR_IMPL(asciiAlNum,   QRegularExpression("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption))
 REGEX_BASED_VALIDATOR_IMPL(unicodeAlNum, QRegularExpression("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption | QRegularExpression::UseUnicodePropertiesOption))
-REGEX_BASED_VALIDATOR_IMPL(lowerCase,    QRegularExpression("^[a-z0-9]+$"));
-REGEX_BASED_VALIDATOR_IMPL(upperCase,    QRegularExpression("^[A-Z0-9]+$"));
+REGEX_BASED_VALIDATOR_IMPL(lowerCase,    QRegularExpression("^[a-z0-9]+$"))
+REGEX_BASED_VALIDATOR_IMPL(upperCase,    QRegularExpression("^[A-Z0-9]+$"))
 
 REGEX_BASED_VALIDATOR_IMPL(md5,          QRegularExpression("^[a-f0-9]{32}$", QRegularExpression::CaseInsensitiveOption))
 REGEX_BASED_VALIDATOR_IMPL(hex,          QRegularExpression("^[a-f0-9]+$", QRegularExpression::CaseInsensitiveOption))
 
-CONDITIONAL_VALIDATOR_IMPL(real,     bool Error;_value.toDouble(&Error);,   Error)
-CONDITIONAL_VALIDATOR_IMPL(integer,  bool Error;_value.toLongLong(&Error);, Error)
+CONDITIONAL_VALIDATOR_IMPL(real,     bool WasOk;_value.toDouble(&WasOk);,  WasOk)
+CONDITIONAL_VALIDATOR_IMPL(integer,  bool WasOk;_value.toLongLong(&WasOk);,WasOk)
 CONDITIONAL_VALIDATOR_IMPL(boolean, , _value.canConvert<bool>())
-CONDITIONAL_VALIDATOR_IMPL(even,     bool Error;qint64 Value = _value.toLongLong(&Error);, (Error || (Value % 2)))
-CONDITIONAL_VALIDATOR_IMPL(odd,      bool Error;qint64 Value = _value.toLongLong(&Error);, (Error || (Value % 2) == 0))
-CONDITIONAL_VALIDATOR_IMPL(negative, bool Error;qreal Value = _value.toDouble(&Error);,   (Error || Value >= 0) )
-CONDITIONAL_VALIDATOR_IMPL(positive, bool Error;qreal Value = _value.toDouble(&Error);,   (Error || Value < 0) )
+CONDITIONAL_VALIDATOR_IMPL(even,     bool WasOk;qint64 Value = _value.toLongLong(&WasOk);, (!WasOk || (Value % 2) == 0))
+CONDITIONAL_VALIDATOR_IMPL(odd,      bool WasOk;qint64 Value = _value.toLongLong(&WasOk);, (!WasOk || (Value % 2)))
+CONDITIONAL_VALIDATOR_IMPL(negative, bool WasOk;qreal Value  = _value.toDouble(&WasOk);,   (!WasOk || Value < 0) )
+CONDITIONAL_VALIDATOR_IMPL(positive, bool WasOk;qreal Value  = _value.toDouble(&WasOk);,   (!WasOk || Value >= 0) )
 
 QString allwaysValid::validate(const QVariant&,  const QString&)  { return QString(); }
 QString allwaysInvalid::validate(const QVariant&,  const QString& _fieldName)  { return _fieldName.isEmpty() ? QString("must be alwasy invalid") : QString("'%1' must be allways invalid").arg(_fieldName); }
 CONDITIONAL_VALIDATOR_IMPL(arrayType, , _value.canConvert<QVariantList>())
 CONDITIONAL_VALIDATOR_IMPL(objectType, , _value.canConvert<QVariantMap>())
 
-CONDITIONAL_VALIDATOR_IMPL(url, , QUrl(_value.toString()).isValid() == false)
-CONDITIONAL_VALIDATOR_IMPL(date, , QDate::fromString(_value.toString(), Qt::ISODateWithMs).isValid() == false)
-CONDITIONAL_VALIDATOR_IMPL(time, ,  QTime::fromString(_value.toString(), Qt::ISODateWithMs).isValid() == false)
-CONDITIONAL_VALIDATOR_IMPL(dateTime, ,  QDateTime::fromString(_value.toString(), Qt::ISODateWithMs).isValid() == false)
+CONDITIONAL_VALIDATOR_IMPL(url, ,
+                           _value.toString() == "localhost" ||
+                           (_value.toString().contains('.') && QUrl(_value.toString(), QUrl::StrictMode).isValid())
+                          )
+CONDITIONAL_VALIDATOR_IMPL(date, , QDate::fromString(_value.toString(), Qt::ISODate).isValid())
+CONDITIONAL_VALIDATOR_IMPL(time, ,  QTime::fromString(_value.toString(), Qt::ISODateWithMs).isValid())
+CONDITIONAL_VALIDATOR_IMPL(dateTime, ,  QDateTime::fromString(_value.toString(), Qt::ISODateWithMs).isValid())
 
 QString notEmpty::validate(const QVariant& _value,  const QString& _fieldName)  {
     auto createError = [_fieldName](bool _isEmpty){

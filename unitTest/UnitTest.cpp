@@ -36,8 +36,6 @@ void UnitTest::GenericValidators()
     VERIFY_VALIDATOR(upperCase(), "SD543", "ace\';'");
     VERIFY_VALIDATOR(upperCase(), "SD543", "ؤيAA");
 
-
-
     //VERIFY_VALIDATOR(null(), QString(), "ace\';'");
     //VERIFY_VALIDATOR(null(), QVariant(), "ace\';'");
 
@@ -48,13 +46,75 @@ void UnitTest::GenericValidators()
     VERIFY_VALIDATOR(maxLenght(5), "abc", "abcdefghi");
 
     VERIFY_VALIDATOR(contains("abc"), "baabc", "aaaa");
-    VERIFY_VALIDATOR(contains("abc"), QVariantList({"abc"}), QVariantList({"baabc"}));
-    VERIFY_VALIDATOR(contains("abc"), QVariantMap({{"abc", 1}}), QVariantMap({{"baabc",2}}));
+    VERIFY_VALIDATOR(startsWith("abc"), "abcdef", "aabcaaa");
+    VERIFY_VALIDATOR(endsWith("abc"), "baabc", "aabcaa");
+
+    VERIFY_VALIDATOR(contains("abc"), "baabc", "aaaa");
+
+    VERIFY_VALIDATOR(equals("abc"), "abc", "aaaa");
+    VERIFY_VALIDATOR(equals(QVariantMap({{"abc",123}})), QVariantMap({{"abc",123}}), "aaaa");
+    VERIFY_VALIDATOR(equals(QVariantMap({{"abc",123}})), QVariantHash({{"abc",123}}), "aaaa");
+
+    VERIFY_VALIDATOR(matches(QRegularExpression("^\\d+$")), "1234", "abcd");
+    VERIFY_VALIDATOR(matches(QRegularExpression("^\\d+$")), "1234", "abcd");
+
+    VERIFY_VALIDATOR(real(), 1.2, "abc");
+    VERIFY_VALIDATOR(integer(), 1, "a");
+    VERIFY_VALIDATOR(boolean(), true, QVariantList());
+    VERIFY_VALIDATOR(boolean(), 1, QVariantList({}));
+    VERIFY_VALIDATOR(even(), 2, 1);
+    VERIFY_VALIDATOR(odd(), 3, 6);
+    VERIFY_VALIDATOR(hex(), "abcdef1234567890", "qwedsa");
+    VERIFY_VALIDATOR(negative(), "-1234", "1234");
+    VERIFY_VALIDATOR(positive(), "1234", "-1234");
+
+    QVERIFY(QFieldValidator().allwaysInvalid().isValid("_trueValue") == false);
+    QVERIFY(QFieldValidator().allwaysValid().isValid("_trueValue"));
+
+    VERIFY_VALIDATOR(arrayType(), QVariantList({"abcd"}), "-1234");
+    VERIFY_VALIDATOR(arrayType(), QVariantList({"abcd"}), QVariantMap({{"iyu", "1234"}}));
+
+    VERIFY_VALIDATOR(objectType(), QVariantMap({{"abcd", 1234}}), "-1234");
+    VERIFY_VALIDATOR(objectType(), QVariantMap({{"abcd", 1234}}), QVariantList({"iyu"}));
+
+    VERIFY_VALIDATOR(date(), "2018-12-01", "1999-13-01");
+    VERIFY_VALIDATOR(date(), "1999/12/01", "1999-02-29");
+    VERIFY_VALIDATOR(time(), "12:26", "1999/12/01");
+    VERIFY_VALIDATOR(time(), "12:26:32", "1999/12/01");
+    VERIFY_VALIDATOR(time(), "12:26:32.345", "1999/12/01");
+    VERIFY_VALIDATOR(dateTime(), "1999-12-01T12:26:32", "1999/02/29");
+    VERIFY_VALIDATOR(dateTime(), "1999-12-01Z12:26:32", "1999/02/29");
+    VERIFY_VALIDATOR(dateTime(), "1999/12/01 12:26:32", "1999/02/29");
+    VERIFY_VALIDATOR(dateTime(), "1999-12-01", "1999/02/29");
+
+    VERIFY_VALIDATOR(url(), "test.com", "1234");
+    VERIFY_VALIDATOR(url(), "ftp://test.com", "-1234");
+    VERIFY_VALIDATOR(url(), "localhost", "-1234");
+    VERIFY_VALIDATOR(url(), "127.0.0.1", "-1234");
+    VERIFY_VALIDATOR(url(), "http://127.0.0.1", "-1234");
+    VERIFY_VALIDATOR(md5(), "66b89aa15f5f7ea67926d29d02dce7a8", "-1234");
 
     //VERIFY_VALIDATOR(notEmpty(), "a", "");
     //VERIFY_VALIDATOR(notEmpty(), QVariantList({{2},{3}}), QVariantList());
     //VERIFY_VALIDATOR(notEmpty(), QVariantMap({{"2","ewe"},{"3","w"}}), QVariantMap());
+}
 
+void UnitTest::ObjectValidators()
+{
+    VERIFY_VALIDATOR(json(), "{\"1234\":\"abcd\"}", "-1234");
+    VERIFY_VALIDATOR(json(), "{}", "{\"1234\"}");
+    VERIFY_VALIDATOR(json(), "[\"1234\",1234,\"abcd\"]", "-1234");
+
+    VERIFY_VALIDATOR(hasKey("1234"), "{\"1234\":\"abcd\"}", "{\"12345\":{\"1234\":1234}}");
+    VERIFY_VALIDATOR(hasKey("1234"), QVariantMap({{"1234", "abcd"}}), QVariantMap({{"12345","1234"}}));
+    VERIFY_VALIDATOR(hasKey("1234", QFieldValidator().equals("abcd")),
+                     QVariantMap({{"1234", "abcd"}}),
+                     QVariantMap({{"1234", "1234"}}));
+    VERIFY_VALIDATOR(hasKey("1234", QFieldValidator().equals("abcd"), true),
+                     QVariantMap({{"234", "abcd"}}),
+                     QVariantMap({{"1234", "1234"}}));
+
+    VERIFY_VALIDATOR(hasNestedKey("ab.cd"), QVariantMap({{"ab", QVariantMap({{"cd",1234}})}}), QVariantMap({{"12345","1234"}}));
 }
 
 void UnitTest::EmailValidators()
