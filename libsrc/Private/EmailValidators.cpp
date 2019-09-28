@@ -4512,7 +4512,7 @@ QString emailNotDomains::validate(const QVariant& _value, const QString& _fieldN
         Error = email().validate(_value, _fieldName);
     if(Error.size())
         return Error;
-    if(this->Domains.contains(_value.toString().split('@').last().toLower()) == false)
+    if(this->Domains.contains(_value.toString().split('@').last().toLower()))
         return _fieldName.isEmpty() ? QString("Email must not be from this domain: '%1'").arg(_value.toString()) : QString("'%1' Email must not be from this domain").arg(_fieldName);
     return {};
 }

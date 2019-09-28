@@ -36,6 +36,10 @@ void UnitTest::GenericValidators()
     VERIFY_VALIDATOR(upperCase(), "SD543", "ace\';'");
     VERIFY_VALIDATOR(upperCase(), "SD543", "ؤيAA");
 
+    //VERIFY_VALIDATOR(notEmpty(), "a", "");
+    //VERIFY_VALIDATOR(notEmpty(), QVariantList({{2},{3}}), QVariantList());
+    //VERIFY_VALIDATOR(notEmpty(), QVariantMap({{"2","ewe"},{"3","w"}}), QVariantMap());
+
     //VERIFY_VALIDATOR(null(), QString(), "ace\';'");
     //VERIFY_VALIDATOR(null(), QVariant(), "ace\';'");
 
@@ -93,10 +97,6 @@ void UnitTest::GenericValidators()
     VERIFY_VALIDATOR(url(), "127.0.0.1", "-1234");
     VERIFY_VALIDATOR(url(), "http://127.0.0.1", "-1234");
     VERIFY_VALIDATOR(md5(), "66b89aa15f5f7ea67926d29d02dce7a8", "-1234");
-
-    //VERIFY_VALIDATOR(notEmpty(), "a", "");
-    //VERIFY_VALIDATOR(notEmpty(), QVariantList({{2},{3}}), QVariantList());
-    //VERIFY_VALIDATOR(notEmpty(), QVariantMap({{"2","ewe"},{"3","w"}}), QVariantMap());
 }
 
 void UnitTest::ObjectValidators()
@@ -119,7 +119,11 @@ void UnitTest::ObjectValidators()
 
 void UnitTest::EmailValidators()
 {
-
+    VERIFY_VALIDATOR(email(), "test@4warding.com", "baba/ddexample.com");
+    VERIFY_VALIDATOR(emailNotFake(), "test+dfd@gmail.com", "baba@4warding.com");
+    VERIFY_VALIDATOR(emailJustDomains({"gmail.com"}), "test@gmail.com", "babadd@hotmail.com");
+    VERIFY_VALIDATOR(emailNotDomains({"gmail.com"}), "test@hotmail.com", "babadd@gmail.com");
+    VERIFY_VALIDATOR(emailNotDomains({"gmail.com"}, true), "test@hotmail.com", "test@4warding.com");
 }
 
 void UnitTest::BankValidators()
