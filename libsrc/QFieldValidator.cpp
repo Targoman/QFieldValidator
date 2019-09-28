@@ -41,9 +41,12 @@ QFieldValidator::~QFieldValidator()
 
 bool QFieldValidator::isValid(const QVariant& _value, const QString& _fieldName)
 {
-    if(this->Data->IsOptional == false && this->Data->isEmpty(_value)){
-        this->Data->ErrorMessage = _fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName);
-        return false;
+    if(this->Data->isEmpty(_value)){
+        if(this->Data->IsOptional == false){
+            this->Data->ErrorMessage = _fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName);
+            return false;
+        }
+        return true;
     }
     return this->Data->isValid(_value, _fieldName);
 }
@@ -109,7 +112,6 @@ ADD_NEW_GENERIC_FIELDVALIDATOR(unicodeAlNum);
 ADD_NEW_GENERIC_FIELDVALIDATOR(lowerCase);
 ADD_NEW_GENERIC_FIELDVALIDATOR(upperCase);
 ADD_NEW_GENERIC_FIELDVALIDATOR(notEmpty);
-ADD_NEW_GENERIC_FIELDVALIDATOR(null);
 ADD_NEW_GENERIC_FIELDVALIDATOR(notNull);
 
 QFieldValidator& QFieldValidator::minLenght(size_t _len){this->Data->SingleValidators.push_back(new Validators::minLenght(_len));return *this;}

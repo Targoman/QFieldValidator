@@ -36,15 +36,12 @@ void UnitTest::GenericValidators()
     VERIFY_VALIDATOR(upperCase(), "SD543", "ace\';'");
     VERIFY_VALIDATOR(upperCase(), "SD543", "ؤيAA");
 
-    //VERIFY_VALIDATOR(notEmpty(), "a", "");
-    //VERIFY_VALIDATOR(notEmpty(), QVariantList({{2},{3}}), QVariantList());
-    //VERIFY_VALIDATOR(notEmpty(), QVariantMap({{"2","ewe"},{"3","w"}}), QVariantMap());
+    VERIFY_VALIDATOR(notEmpty(), "a", "");
+    VERIFY_VALIDATOR(notEmpty(), QVariantList({{2},{3}}), QVariantList());
+    VERIFY_VALIDATOR(notEmpty(), QVariantMap({{"2","ewe"},{"3","w"}}), QVariantMap());
 
-    //VERIFY_VALIDATOR(null(), QString(), "ace\';'");
-    //VERIFY_VALIDATOR(null(), QVariant(), "ace\';'");
-
-    //VERIFY_VALIDATOR(notNull(), "ace\';'", QString());
-    //VERIFY_VALIDATOR(notNull(), "ace\';'", QVariant());
+    VERIFY_VALIDATOR(notNull(), "ace\';'", QVariant());
+    VERIFY_VALIDATOR(notNull(), "ace\';'", QString());
 
     VERIFY_VALIDATOR(minLenght(5), "abcde", "abc");
     VERIFY_VALIDATOR(maxLenght(5), "abc", "abcdefghi");
@@ -87,8 +84,7 @@ void UnitTest::GenericValidators()
     VERIFY_VALIDATOR(time(), "12:26:32", "1999/12/01");
     VERIFY_VALIDATOR(time(), "12:26:32.345", "1999/12/01");
     VERIFY_VALIDATOR(dateTime(), "1999-12-01T12:26:32", "1999/02/29");
-    VERIFY_VALIDATOR(dateTime(), "1999-12-01Z12:26:32", "1999/02/29");
-    VERIFY_VALIDATOR(dateTime(), "1999/12/01 12:26:32", "1999/02/29");
+    VERIFY_VALIDATOR(dateTime(), "1999/12/01 12:26:32.354", "1999/02/29");
     VERIFY_VALIDATOR(dateTime(), "1999-12-01", "1999/02/29");
 
     VERIFY_VALIDATOR(url(), "test.com", "1234");
@@ -128,17 +124,31 @@ void UnitTest::EmailValidators()
 
 void UnitTest::BankValidators()
 {
-
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::Any), "6221-0610-7157-2589", "6221-0610-7157a2589");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::Any), "6221061071572589", "6221-0610-7157a2589");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::JCB), "3530111333300000", "6221-0610-7157-2589");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::Mellat), "6104337869844439", "6221061071560751");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::Parsian), "6221061071560751", "6104337869844439");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::Discover), "6011 0000 0000 0004", "6104337869844439");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::DinersClub), "3000 0000 0000 04", "6104337869844439");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::MasterCard), "5500 0000 0000 0004", "6104337869844439");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::AmericanExpress), "371449635398431", "6104337869844439");
+    VERIFY_VALIDATOR(creditCard(QFieldValidator::CreditCards::VISA), "4012888888881881", "6221-0610-7157-2589");
 }
 
 void UnitTest::CountryBasedValidators()
 {
-
+    VERIFY_VALIDATOR(postalCode("IR"), "1556913554", "15494");
+    VERIFY_VALIDATOR(postalCode("BR"), "02179-000", "02179");
+    VERIFY_VALIDATOR(postalCode("BR"), "02179000", "02179.000");
+    VERIFY_VALIDATOR(postalCode("CA"), "A1A 2B2", "1A1B2B");
+    VERIFY_VALIDATOR(postalCode("GB"), "GIR 0AA", "GIR 00A");
+    VERIFY_VALIDATOR(postalCode("GB"), "PR1 9LY", "GIR0AA");
 }
 
 void UnitTest::complexValidators()
 {
-
+    VERIFY_VALIDATOR(optional(QFieldValidator().md5()), "", "1234");
 }
 
 QTEST_MAIN(UnitTest)

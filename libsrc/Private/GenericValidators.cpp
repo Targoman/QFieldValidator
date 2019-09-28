@@ -65,9 +65,9 @@ QString notEmpty::validate(const QVariant& _value,  const QString& _fieldName)  
 
     };
 
-    if(_value.canConvert<QVariantMap>()) return createError(_value.toMap().isEmpty());
-    if(_value.canConvert<QVariantList>()) return createError(_value.toList().isEmpty());
-    return createError(_value.toString().isEmpty());
+    if(_value.canConvert<QVariantMap>()) return createError(_value.toMap().isEmpty() == false);
+    if(_value.canConvert<QVariantList>()) return createError(_value.toList().isEmpty() == false);
+    return createError(_value.toString().isEmpty() == false);
 }
 
 QString null::validate(const QVariant& _value,  const QString& _fieldName)  {

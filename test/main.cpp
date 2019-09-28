@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 
     QFieldValidator v;
 
-    qDebug()<<v.emailNotDomains({"gmail.com"}).isValid("amdk@hotmail.com");
+
+    qDebug()<<v.notEmpty().isValid("a");
 
     /*qDebug()<<v.md5().isValid("ffsdfdsfdsf", "fdfds");
     qDebug()<<v.errorMessage();v.reset();

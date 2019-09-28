@@ -27,14 +27,14 @@ namespace Private {
 
 static QMap<QFieldValidator::CreditCards::Type, QRegularExpression> rxValidCreditCards = {
     {QFieldValidator::CreditCards::Any, QRegularExpression("^[0-9]+$")},
-    {QFieldValidator::CreditCards::AmericanExpress, QRegularExpression("/^3[47]\\d{13}$/")},
+    {QFieldValidator::CreditCards::AmericanExpress, QRegularExpression("^3[47]\\d{13}$")},
     {QFieldValidator::CreditCards::DinersClub, QRegularExpression("^3(?:0[0-5]|[68]\\d)\\d{11}$")},
     {QFieldValidator::CreditCards::Discover, QRegularExpression("^6(?:011|5\\d{2})\\d{12}$")},
     {QFieldValidator::CreditCards::JCB, QRegularExpression("^(?:2131|1800|35\\d{3})\\d{11}$")},
     {QFieldValidator::CreditCards::MasterCard, QRegularExpression("(5[1-5]|2[2-7])\\d{14}$")},
-    {QFieldValidator::CreditCards::VISA, QRegularExpression("/^4\\d{12}(?:\\d{3})?$/")},
-    {QFieldValidator::CreditCards::Parsian, QRegularExpression("/^6221\\d{12}$/")},
-    {QFieldValidator::CreditCards::Mellat, QRegularExpression("/^6104\\d{12}$/")},
+    {QFieldValidator::CreditCards::VISA, QRegularExpression("^4\\d{12}(?:\\d{3})?$")},
+    {QFieldValidator::CreditCards::Parsian, QRegularExpression("^6221\\d{12,12}$")},
+    {QFieldValidator::CreditCards::Mellat, QRegularExpression("^6104[0-9]{12,12}$")},
 };
 
 }

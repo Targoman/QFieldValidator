@@ -100,7 +100,6 @@ public:
     QFieldValidator& lowerCase();
     QFieldValidator& upperCase();
     QFieldValidator& notEmpty();
-    QFieldValidator& null();
     QFieldValidator& notNull();
     QFieldValidator& minLenght(size_t _len);
     QFieldValidator& maxLenght(size_t _len);
