@@ -28,8 +28,32 @@
 
 namespace Validators{
 
-REGEX_BASED_VALIDATOR_IMPL(asciiAlNum,   QRegularExpression("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption))
-REGEX_BASED_VALIDATOR_IMPL(unicodeAlNum, QRegularExpression("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption | QRegularExpression::UseUnicodePropertiesOption))
+QString asciiAlNum::validate(const QVariant& _value,  const QString& _fieldName)  {
+    static QRegularExpression Regex("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression RegexWithSpace("^[\\w\\s\\d]+$", QRegularExpression::CaseInsensitiveOption);
+    QString Value = _value.toString();
+    if(this->ExtraChars.size())
+        Value.remove(QRegularExpression("["+this->ExtraChars+"]"));
+
+    if(this->AllowSpace)
+        return RegexWithSpace.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+    else
+        return Regex.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+}
+
+QString unicodeAlNum::validate(const QVariant& _value,  const QString& _fieldName)  {
+    static QRegularExpression Regex("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption | QRegularExpression::UseUnicodePropertiesOption);
+    static QRegularExpression RegexWithSpace("^[\\w\\s\\d]+$", QRegularExpression::CaseInsensitiveOption | QRegularExpression::UseUnicodePropertiesOption);
+    QString Value = _value.toString();
+    if(this->ExtraChars.size())
+        Value.remove(QRegularExpression("["+this->ExtraChars+"]"));
+
+    if(this->AllowSpace)
+        return RegexWithSpace.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+    else
+        return Regex.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+}
+
 REGEX_BASED_VALIDATOR_IMPL(lowerCase,    QRegularExpression("^[a-z0-9]+$"))
 REGEX_BASED_VALIDATOR_IMPL(upperCase,    QRegularExpression("^[A-Z0-9]+$"))
 

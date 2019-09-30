@@ -97,14 +97,15 @@ public:
     QFieldValidator& when(const QFieldValidator& _if, const QFieldValidator& _then, const QFieldValidator& _else);
 
     /*********************/
-    QFieldValidator& asciiAlNum();
-    QFieldValidator& unicodeAlNum();
+    QFieldValidator& asciiAlNum(bool _allowSpace = false, const QString& _extraValidChars = QString());
+    QFieldValidator& unicodeAlNum(bool _allowSpace = false, const QString& _extraValidChars = QString());
     QFieldValidator& lowerCase();
     QFieldValidator& upperCase();
     QFieldValidator& notEmpty();
     QFieldValidator& notNull();
     QFieldValidator& minLenght(size_t _len);
     QFieldValidator& maxLenght(size_t _len);
+    QFieldValidator& noWhiteSpace(size_t _len);
     QFieldValidator& contains(const QString& _value);
     QFieldValidator& startsWith(const QString& _value);
     QFieldValidator& endsWith(const QString& _value);

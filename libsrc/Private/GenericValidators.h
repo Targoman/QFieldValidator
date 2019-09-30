@@ -55,8 +55,16 @@ QString _class::validate(const QVariant& _value, const QString& _fieldName){ \
         _precondition; return _wasOk ? QString() : createErrorString(_class, _fieldName); \
     }
 
-DEFINE_GENERIC_VALIDATOR(asciiAlNum);
-DEFINE_GENERIC_VALIDATOR(unicodeAlNum);
+class asciiAlNum: public intfValidator{
+    public: asciiAlNum(bool _allowSpace, const QString &_extraValidChars) : AllowSpace(_allowSpace), ExtraChars(_extraValidChars){;}
+    QString validate(const QVariant& _value, const QString& _fieldName); private: bool AllowSpace; QString ExtraChars;
+};
+
+class unicodeAlNum: public intfValidator{
+    public: unicodeAlNum(bool _allowSpace, const QString &_extraValidChars) : AllowSpace(_allowSpace), ExtraChars(_extraValidChars){;}
+    QString validate(const QVariant& _value, const QString& _fieldName); private: bool AllowSpace; QString ExtraChars;
+};
+
 DEFINE_GENERIC_VALIDATOR(lowerCase);
 DEFINE_GENERIC_VALIDATOR(upperCase);
 DEFINE_GENERIC_VALIDATOR(notEmpty);

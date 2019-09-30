@@ -114,13 +114,13 @@ QFieldValidator& QFieldValidator::when(const QFieldValidator& _if, const QFieldV
 
 #define ADD_NEW_GENERIC_FIELDVALIDATOR(_name) QFieldValidator& QFieldValidator::_name(){this->Data->SingleValidators.push_back(new Validators::_name);return *this;}
 
-ADD_NEW_GENERIC_FIELDVALIDATOR(asciiAlNum);
-ADD_NEW_GENERIC_FIELDVALIDATOR(unicodeAlNum);
 ADD_NEW_GENERIC_FIELDVALIDATOR(lowerCase);
 ADD_NEW_GENERIC_FIELDVALIDATOR(upperCase);
 ADD_NEW_GENERIC_FIELDVALIDATOR(notEmpty);
 ADD_NEW_GENERIC_FIELDVALIDATOR(notNull);
 
+QFieldValidator& QFieldValidator::asciiAlNum(bool _allowSpace, const QString &_extraValidChars){this->Data->SingleValidators.push_back(new Validators::asciiAlNum(_allowSpace, _extraValidChars));return *this;}
+QFieldValidator& QFieldValidator::unicodeAlNum(bool _allowSpace, const QString &_extraValidChars){this->Data->SingleValidators.push_back(new Validators::unicodeAlNum(_allowSpace, _extraValidChars));return *this;}
 QFieldValidator& QFieldValidator::minLenght(size_t _len){this->Data->SingleValidators.push_back(new Validators::minLenght(_len));return *this;}
 QFieldValidator& QFieldValidator::maxLenght(size_t _len){this->Data->SingleValidators.push_back(new Validators::maxLenght(_len));return *this;}
 QFieldValidator& QFieldValidator::contains(const QString& _value){this->Data->SingleValidators.push_back(new Validators::contains(_value));return *this;}
