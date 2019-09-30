@@ -101,16 +101,18 @@ void UnitTest::ObjectValidators()
     VERIFY_VALIDATOR(json(), "{}", "{\"1234\"}");
     VERIFY_VALIDATOR(json(), "[\"1234\",1234,\"abcd\"]", "-1234");
 
-    VERIFY_VALIDATOR(hasKey("1234"), "{\"1234\":\"abcd\"}", "{\"12345\":{\"1234\":1234}}");
-    VERIFY_VALIDATOR(hasKey("1234"), QVariantMap({{"1234", "abcd"}}), QVariantMap({{"12345","1234"}}));
+    VERIFY_VALIDATOR(hasKey("1234",QFieldValidator().allwaysValid(),true), "{\"1234\":\"abcd\"}", "{\"12345\":{\"1234\":1234}}");
+    VERIFY_VALIDATOR(hasKey("1234",QFieldValidator().allwaysValid(),true), QVariantMap({{"1234", "abcd"}}), QVariantMap({{"12345","1234"}}));
     VERIFY_VALIDATOR(hasKey("1234", QFieldValidator().equals("abcd")),
                      QVariantMap({{"1234", "abcd"}}),
                      QVariantMap({{"1234", "1234"}}));
     VERIFY_VALIDATOR(hasKey("1234", QFieldValidator().equals("abcd"), true),
-                     QVariantMap({{"234", "abcd"}}),
+                     QVariantMap({{"1234", "abcd"}}),
                      QVariantMap({{"1234", "1234"}}));
 
-    VERIFY_VALIDATOR(hasNestedKey("ab.cd"), QVariantMap({{"ab", QVariantMap({{"cd",1234}})}}), QVariantMap({{"12345","1234"}}));
+    VERIFY_VALIDATOR(hasNestedKey("ab.cd",QFieldValidator().allwaysValid(), true),
+                     QVariantMap({{"ab", QVariantMap({{"cd",1234}})}}),
+                     QVariantMap({{"12345","1234"}}));
 }
 
 void UnitTest::EmailValidators()
@@ -149,6 +151,35 @@ void UnitTest::CountryBasedValidators()
 void UnitTest::complexValidators()
 {
     VERIFY_VALIDATOR(optional(QFieldValidator().md5()), "", "1234");
+    VERIFY_VALIDATOR(when(QFieldValidator().email(),
+                          QFieldValidator().emailNotFake(),
+                          QFieldValidator().phone()
+                          ), "mehran@gmail.com", "abbas@emailo.pro");
+    VERIFY_VALIDATOR(when(QFieldValidator().email(),
+                          QFieldValidator().emailNotFake(),
+                          QFieldValidator().mobile()
+                          ), "09126184250", "qazwsx");
+    VERIFY_VALIDATOR(oneOf({
+                               QFieldValidator().email(),
+                               QFieldValidator().mobile()
+                           }),
+                        "09126175251",
+                        "bab.com"
+                     );
+    VERIFY_VALIDATOR(oneOf({
+                               {QFieldValidator().email()},
+                               {QFieldValidator().mobile()}
+                           }),
+                        "ali@reza.com",
+                        "bab.com"
+                     );
+    VERIFY_VALIDATOR(allOf({
+                               {QFieldValidator().email()},
+                               {QFieldValidator().maxLenght(10)}
+                           }),
+                        "ba@ma.com",
+                        "baba@ma.com"
+                     );
 }
 
 QTEST_MAIN(UnitTest)

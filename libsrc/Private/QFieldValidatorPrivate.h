@@ -26,6 +26,7 @@
 #include <QVariant>
 #include <QSharedData>
 #include "intfValidator.hpp"
+#include "QFieldValidator.h"
 
 class QFieldValidator;
 class QFieldValidatorPrivate : public QSharedData
@@ -34,13 +35,15 @@ public:
     enum enuCriteria{
         CRITERIA_Signle,
         CRITERIA_OneOf,
-        CRITERIA_AllOf
+        CRITERIA_AllOf,
+        CRITERIA_When
     };
 
     typedef QList<intfValidator*> ValidatorList_t;
 
 public:
     QFieldValidatorPrivate();
+    QFieldValidatorPrivate(const QFieldValidatorPrivate& _other);
     bool isValid(const QVariant& _value, const QString& _fieldName);
     bool isEmpty(const QVariant& _value);
     void reset();
@@ -49,16 +52,14 @@ private:
     bool checkAllRules(const QVariant& value, const QString& _fieldName);
 
 public:
-    QString FieldName;
-    QVariant Value;
     QString ErrorMessage;
     bool IsOptional;
     enuCriteria Criteria;
     ValidatorList_t SingleValidators;
 
-    QList<QFieldValidator*> MultiValidators;
-    QFieldValidator* IfValidator;
-    QFieldValidator* ElseValidator;
+    QList<QFieldValidator> MultiValidators;
+    QScopedPointer<QFieldValidator> IfValidator;
+    QScopedPointer<QFieldValidator> ElseValidator;
 };
 
 

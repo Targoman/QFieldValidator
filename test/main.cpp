@@ -33,8 +33,12 @@ int main(int argc, char *argv[])
 
     QFieldValidator v;
 
+    qDebug()<<QFieldValidator().hasNestedKey("ab.cd").isValid(QVariantMap({{"12345","1234"}})) ;
 
-    qDebug()<<v.notEmpty().isValid("a");
+    qDebug()<<v.oneOf({
+                          QFieldValidator().email(),
+                          QFieldValidator().mobile()
+                      }).isValid("baba.com");
 
     /*qDebug()<<v.md5().isValid("ffsdfdsfdsf", "fdfds");
     qDebug()<<v.errorMessage();v.reset();

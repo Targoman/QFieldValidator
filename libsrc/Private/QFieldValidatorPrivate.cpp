@@ -21,19 +21,45 @@
  */
 #include "QFieldValidatorPrivate.h"
 #include "GenericValidators.h"
-#include <QFieldValidator.h>
 #include <QPointer>
 
 QFieldValidatorPrivate::QFieldValidatorPrivate() :
     IsOptional(false),
-    Criteria(CRITERIA_Signle),
-    IfValidator(nullptr),
-    ElseValidator(nullptr)
+    Criteria(CRITERIA_Signle)
+{;}
+
+QFieldValidatorPrivate::QFieldValidatorPrivate(const QFieldValidatorPrivate &_other) :
+    QSharedData(_other),
+    ErrorMessage(_other.ErrorMessage),
+    IsOptional(_other.IsOptional),
+    Criteria(_other.Criteria),
+    SingleValidators(_other.SingleValidators),
+    MultiValidators(_other.MultiValidators),
+    IfValidator(_other.IfValidator.data()),
+    ElseValidator(_other.ElseValidator.data())
 {;}
 
 bool QFieldValidatorPrivate::isValid(const QVariant& _value, const QString& _fieldName)
 {
-    if(this->IfValidator){
+    switch(this->Criteria){
+    case CRITERIA_Signle:
+        return this->checkAllRules(_value, _fieldName);
+    case CRITERIA_OneOf:
+        foreach(auto Validator, this->MultiValidators){
+            if(Validator.isValid(_value, _fieldName))
+                return true;
+        }
+        this->ErrorMessage = _fieldName.isEmpty() ? "none of the specified validation rules matched" : QString("%1 is invalid").arg(_fieldName);
+        return false;
+    case CRITERIA_AllOf:
+        foreach(auto Validator, this->MultiValidators){
+            if(Validator.isValid(_value, _fieldName) == false){
+                this->ErrorMessage = Validator.errorMessage();
+                return false;
+            }
+        }
+        return true;
+    case CRITERIA_When:
         if(this->IfValidator->isValid(_value, _fieldName)){
             return this->checkAllRules(_value, _fieldName);
         }else{
@@ -42,26 +68,6 @@ bool QFieldValidatorPrivate::isValid(const QVariant& _value, const QString& _fie
             this->ErrorMessage = this->ElseValidator->errorMessage();
             return false;
         }
-    }
-
-    switch(this->Criteria){
-    case CRITERIA_Signle:
-        return this->checkAllRules(_value, _fieldName);
-    case CRITERIA_OneOf:
-        foreach(auto Validator, this->MultiValidators){
-            if(Validator->isValid(_value, _fieldName))
-                return true;
-        }
-        this->ErrorMessage = _fieldName.isEmpty() ? "none of the specified validation rules matched" : QString("%1 is invalid").arg(_fieldName);
-        return false;
-    case CRITERIA_AllOf:
-        foreach(auto Validator, this->MultiValidators){
-            if(Validator->isValid(_value, _fieldName) == false){
-                this->ErrorMessage = Validator->errorMessage();
-                return false;
-            }
-        }
-        return true;
     }
     return true;
 }
@@ -80,8 +86,8 @@ void QFieldValidatorPrivate::reset()
 {
     this->IsOptional = true;
     this->Criteria = CRITERIA_Signle;
-    this->IfValidator = nullptr;
-    this->ElseValidator = nullptr;
+    this->IfValidator.reset(nullptr);
+    this->ElseValidator.reset(nullptr);
     this->SingleValidators.clear();
     this->MultiValidators.clear();
 }

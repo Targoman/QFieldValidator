@@ -66,6 +66,8 @@ public:
 
 public:
     QFieldValidator();
+    QFieldValidator(const QFieldValidator& _other);
+    QFieldValidator& operator =(const QFieldValidator& _other);
     ~QFieldValidator();
     /**
      * @brief isValid Validates based on settings
@@ -91,8 +93,8 @@ public:
 
     QFieldValidator& optional(QFieldValidator& _validator);
     QFieldValidator& oneOf(const QList<QFieldValidator>& _validators);
-    QFieldValidator& allOf(QList<QFieldValidator> _validators);
-    QFieldValidator& whenOf(QFieldValidator& _if, QFieldValidator& _then, QFieldValidator& _else);
+    QFieldValidator& allOf(const QList<QFieldValidator>& _validators);
+    QFieldValidator& when(const QFieldValidator& _if, const QFieldValidator& _then, const QFieldValidator& _else);
 
     /*********************/
     QFieldValidator& asciiAlNum();
@@ -124,8 +126,8 @@ public:
     QFieldValidator& objectType();
     /*********************/
     QFieldValidator& json();
-    QFieldValidator& hasKey(const QString& _key, QFieldValidator& _validator = QFieldValidator().allwaysValid(), bool _mandatory = false);
-    QFieldValidator& hasNestedKey(const QString& _key, QFieldValidator& _validator = QFieldValidator().allwaysValid(), bool _mandatory = false);
+    QFieldValidator& hasKey(const QString& _key, QFieldValidator& _validator = QFieldValidator().allwaysValid(), bool _mandatory = true);
+    QFieldValidator& hasNestedKey(const QString& _key, QFieldValidator& _validator = QFieldValidator().allwaysValid(), bool _mandatory = true);
     /*********************/
     QFieldValidator& date();
     QFieldValidator& time();

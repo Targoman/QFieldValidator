@@ -36,6 +36,12 @@ QFieldValidator::QFieldValidator() :
     Data(new QFieldValidatorPrivate)
 {;}
 
+QFieldValidator::QFieldValidator(const QFieldValidator &_other) : Data(_other.Data)
+{;}
+
+QFieldValidator &QFieldValidator::operator =(const QFieldValidator &_other)
+{this->Data = _other.Data; return *this;}
+
 QFieldValidator::~QFieldValidator()
 {;}
 
@@ -83,23 +89,24 @@ QFieldValidator& QFieldValidator::oneOf(const QList<QFieldValidator>& _validator
     this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_OneOf;
     this->Data->MultiValidators.clear();
     foreach(auto Validator, _validators)
-        this->Data->MultiValidators.push_back(&Validator);
+        this->Data->MultiValidators.push_back(Validator);
     return *this;
 }
 
-QFieldValidator& QFieldValidator::allOf(QList<QFieldValidator> _validators)
+QFieldValidator& QFieldValidator::allOf(const QList<QFieldValidator> &_validators)
 {
     this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllOf;
     this->Data->MultiValidators.clear();
     foreach(auto Validator, _validators)
-        this->Data->MultiValidators.push_back(&Validator);
+        this->Data->MultiValidators.push_back(Validator);
     return *this;
 }
 
-QFieldValidator& QFieldValidator::whenOf(QFieldValidator& _if, QFieldValidator& _then, QFieldValidator& _else)
+QFieldValidator& QFieldValidator::when(const QFieldValidator& _if, const QFieldValidator& _then, const QFieldValidator& _else)
 {
-    this->Data->IfValidator = &_if;
-    this->Data->ElseValidator = &_else;
+    this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_When;
+    this->Data->IfValidator.reset(new QFieldValidator(_if));
+    this->Data->ElseValidator.reset(new QFieldValidator(_else));
     this->Data->SingleValidators = _then.Data->SingleValidators;
     return *this;
 }
