@@ -62,7 +62,7 @@ void QFieldValidator::validate(const QVariant& _value, const QString& _fieldName
     if(this->Data->IsOptional == false && this->Data->isEmpty(_value))
         throw exRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName));
 
-    bool IsValid = this->Data->isValid(_value, _fieldName);
+    bool IsValid = this->isValid(_value, _fieldName);
     if(!IsValid)
         throw exInvalidValue(this->Data->ErrorMessage);
 }

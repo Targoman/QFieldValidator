@@ -156,6 +156,8 @@ private:
     QSharedDataPointer<QFieldValidatorPrivate> Data;
 };
 
+#define QFV QFieldValidator()
+
 #endif // QFIELDVALIDATOR_H
 
 
