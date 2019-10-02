@@ -173,6 +173,19 @@ QFieldValidator& QFieldValidator::creditCard(QFieldValidator::CreditCards::Type 
     this->Data->SingleValidators.push_back(new Validators::creditCard(_type));return *this;
 }
 
+QFieldValidator&QFieldValidator::minValue(double _value, bool _inclusive) {
+    this->Data->SingleValidators.push_back(new Validators::minValue(_value, _inclusive)); return *this;
+}
+
+QFieldValidator&QFieldValidator::maxValue(double _value, bool _inclusive) {
+    this->Data->SingleValidators.push_back(new Validators::maxValue(_value, _inclusive)); return *this;
+}
+
+QFieldValidator&QFieldValidator::betweenValues(double _first, double _second, bool _inclusive){
+    this->Data->SingleValidators.push_back(new Validators::betweenValues(_first, _second, _inclusive)); return *this;
+}
+
+
 QFieldValidator& QFieldValidator::iban(const QString &_country){
     this->Data->SingleValidators.push_back(new Validators::iban(_country));return *this;
 }

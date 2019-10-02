@@ -102,6 +102,10 @@ DEFINE_GENERIC_VALIDATOR(md5);
 class mobile: public intfValidator{public: mobile(bool _c) : MandatoryCountry(_c){;} QString validate(const QVariant& _value, const QString& _fieldName); private: bool MandatoryCountry;};
 class phone: public intfValidator{public: phone(bool _p, bool _c) : MandatoryCountry(_c), MandatoryProvince(_p){;} QString validate(const QVariant& _value, const QString& _fieldName); private: bool MandatoryCountry, MandatoryProvince;};
 
+class minValue: public intfValidator{public: minValue(double _v, bool _i) : Margin(_v), Inclusive(_i){;} QString validate(const QVariant& _value, const QString& _fieldName); private: double Margin; bool Inclusive;};
+class maxValue: public intfValidator{public: maxValue(double _v, bool _i) : Margin(_v), Inclusive(_i){;} QString validate(const QVariant& _value, const QString& _fieldName); private: double Margin; bool Inclusive;};
+class betweenValues: public intfValidator{public: betweenValues(double _mb, double _mt, bool _i) : MarginBottom(_mb), MarginTop(_mt), Inclusive(_i){;} QString validate(const QVariant& _value, const QString& _fieldName); private: double MarginBottom, MarginTop;bool Inclusive;};
+
 }
 
 #endif // GENERICVALIDATORS_HPP

@@ -147,9 +147,9 @@ public:
     QFieldValidator& iban(const QString& _country = "IR");
     QFieldValidator& creditCard(CreditCards::Type _type);
     /*********************/
-    QFieldValidator& minValue(double _value);
-    QFieldValidator& maxValue(double _value);
-    QFieldValidator& betweenValues(double _first, double _second);
+    QFieldValidator& minValue(double _value, bool _inclusive);
+    QFieldValidator& maxValue(double _valu, bool _inclusivee);
+    QFieldValidator& betweenValues(double _first, double _second, bool _inclusive);
     /*********************/
 
 private:

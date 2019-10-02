@@ -143,13 +143,13 @@ STRING_COMPARATOR_IMPL(startsWith, "does not contain")
 STRING_COMPARATOR_IMPL(endsWith, "does not contain")
 QString equals::validate(const QVariant& _value, const QString& _fieldName){
     return _value == this->Var ? QString() :
-                                 (_fieldName.isEmpty() ? QString("must be equal to: %2").arg(this->Var.toString()) : QString("'%1' must be equal to: %3").arg(_fieldName, this->Var.toString()));
+                                 (_fieldName.isEmpty() ? QString("must be equal to: %2").arg(this->Var.toString()) : QString("'%1' must be equal to: %2").arg(_fieldName, this->Var.toString()));
 }
 
 QString matches::validate(const QVariant& _value, const QString& _fieldName){
     return this->Regex.match(_value.toString()).hasMatch() ?
                 QString() :
-                (_fieldName.isEmpty() ? QString("must be match to: %2").arg(this->Regex.pattern()) : QString("'%1' must be equal to: %3").arg(_fieldName, this->Regex.pattern()));
+                (_fieldName.isEmpty() ? QString("must match: %2").arg(this->Regex.pattern()) : QString("'%1' must match: %2").arg(_fieldName, this->Regex.pattern()));
 }
 
 QString mobile::validate(const QVariant& _value, const QString& _fieldName)
@@ -171,5 +171,28 @@ QString phone::validate(const QVariant& _value, const QString& _fieldName)
     return Regex.match(_value.toString().replace(Private::rxExtraChars, "")).hasMatch() ? QString() :createErrorString(mobile, _fieldName);
 }
 
+QString minValue::validate(const QVariant& _value, const QString& _fieldName)
+{
+    return (this->Inclusive ? _value.toDouble() > this->Margin : _value.toDouble() >= this->Margin ) ?
+                QString() :
+                (_fieldName.isEmpty() ? QString("must be greater than: %2").arg(this->Margin) : QString("'%1' must be greater than: %2").arg(_fieldName).arg(this->Margin));
+}
+
+QString maxValue::validate(const QVariant& _value, const QString& _fieldName)
+{
+    return (this->Inclusive ? _value.toDouble() < this->Margin : _value.toDouble() <= this->Margin ) ?
+                QString() :
+                (_fieldName.isEmpty() ? QString("must be greater than: %2").arg(this->Margin) : QString("'%1' must be greater than: %2").arg(_fieldName).arg(this->Margin));
+}
+
+QString betweenValues::validate(const QVariant& _value, const QString& _fieldName)
+{
+    return (this->Inclusive ? _value.toDouble() < this->MarginBottom && _value.toDouble() > this->MarginTop :
+                              _value.toDouble() <= this->MarginBottom && _value.toDouble() >= this->MarginTop ) ?
+                QString() :
+                (_fieldName.isEmpty() ?
+                     QString("must be between: %2 and %3").arg(this->MarginBottom).arg(this->MarginTop) :
+                     QString("'%1' must be between: %2 and %3").arg(_fieldName).arg(this->MarginBottom).arg(this->MarginTop));
+}
 
 }
