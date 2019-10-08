@@ -36,9 +36,9 @@ QString asciiAlNum::validate(const QVariant& _value,  const QString& _fieldName)
         Value.remove(QRegularExpression("["+this->ExtraChars+"]"));
 
     if(this->AllowSpace)
-        return RegexWithSpace.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+        return RegexWithSpace.match(Value).hasMatch() ? QString() : createErrorString(asciiAlNum, _fieldName);
     else
-        return Regex.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+        return Regex.match(Value).hasMatch() ? QString() : createErrorString(asciiAlNum, _fieldName);
 }
 
 QString unicodeAlNum::validate(const QVariant& _value,  const QString& _fieldName)  {
@@ -49,9 +49,9 @@ QString unicodeAlNum::validate(const QVariant& _value,  const QString& _fieldNam
         Value.remove(QRegularExpression("["+this->ExtraChars+"]"));
 
     if(this->AllowSpace)
-        return RegexWithSpace.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+        return RegexWithSpace.match(Value).hasMatch() ? QString() : createErrorString(unicodeAlNum, _fieldName);
     else
-        return Regex.match(_value.toString()).hasMatch() ? QString() : createErrorString(_class, _fieldName);
+        return Regex.match(Value).hasMatch() ? QString() : createErrorString(unicodeAlNum, _fieldName);
 }
 
 REGEX_BASED_VALIDATOR_IMPL(lowerCase,    QRegularExpression("^[a-z0-9]+$"))

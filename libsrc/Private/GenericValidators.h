@@ -42,7 +42,7 @@ static QRegularExpression rxExtraChars("[ \\-\\.]");
 #define DEFINE_GENERIC_STRING_VALIDATOR(_name) \
     class _name : public intfValidator, private Private::clsStringComparator{public: _name(const QString& _key) : clsStringComparator(_key){;} QString validate(const QVariant&, const QString&);};
 
-#define createErrorString(_class, _fieldName) _fieldName.isEmpty() ? QString("Invalid "#_class": '%1'").arg(_value.toString()) : QString("'%1' must be a valid "#_class).arg(_fieldName)
+#define createErrorString(_class, _fieldName) _fieldName.isEmpty() ? QString("Invalid %1: <%2>").arg(#_class, _value.toString()) : QString("<%1> must be a valid <%2>").arg(_fieldName, #_class)
 
 #define REGEX_BASED_VALIDATOR_IMPL(_class, _regex) \
 QString _class::validate(const QVariant& _value, const QString& _fieldName){ \

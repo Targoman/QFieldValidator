@@ -36,7 +36,9 @@ public:
         CRITERIA_Signle,
         CRITERIA_OneOf,
         CRITERIA_AllOf,
-        CRITERIA_When
+        CRITERIA_When,
+        CRITERIA_AllwaysValid,
+        CRITERIA_AllwaysInvalid,
     };
 
     typedef QList<intfValidator*> ValidatorList_t;

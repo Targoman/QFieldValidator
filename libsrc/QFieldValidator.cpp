@@ -139,8 +139,12 @@ ADD_NEW_GENERIC_FIELDVALIDATOR(even);
 ADD_NEW_GENERIC_FIELDVALIDATOR(negative);
 ADD_NEW_GENERIC_FIELDVALIDATOR(positive);
 
-ADD_NEW_GENERIC_FIELDVALIDATOR(allwaysValid);
-ADD_NEW_GENERIC_FIELDVALIDATOR(allwaysInvalid);
+QFieldValidator& QFieldValidator::allwaysValid(){
+    this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllwaysValid;;return *this;
+}
+QFieldValidator& QFieldValidator::allwaysInvalid(){
+    this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllwaysInvalid;;return *this;
+}
 ADD_NEW_GENERIC_FIELDVALIDATOR(arrayType);
 ADD_NEW_GENERIC_FIELDVALIDATOR(objectType);
 

@@ -42,6 +42,10 @@ QFieldValidatorPrivate::QFieldValidatorPrivate(const QFieldValidatorPrivate &_ot
 bool QFieldValidatorPrivate::isValid(const QVariant& _value, const QString& _fieldName)
 {
     switch(this->Criteria){
+    case CRITERIA_AllwaysValid:
+        return true;
+    case CRITERIA_AllwaysInvalid:
+        return false;
     case CRITERIA_Signle:
         return this->checkAllRules(_value, _fieldName);
     case CRITERIA_OneOf:
