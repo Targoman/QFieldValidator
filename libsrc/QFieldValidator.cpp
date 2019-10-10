@@ -47,6 +47,10 @@ QFieldValidator::~QFieldValidator()
 
 bool QFieldValidator::isValid(const QVariant& _value, const QString& _fieldName)
 {
+    if(this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysValid)
+        return true;
+    if(this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysInvalid)
+        return false;
     if(this->Data->isEmpty(_value)){
         if(this->Data->IsOptional == false){
             this->Data->ErrorMessage = _fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName);
@@ -59,6 +63,11 @@ bool QFieldValidator::isValid(const QVariant& _value, const QString& _fieldName)
 
 void QFieldValidator::validate(const QVariant& _value, const QString& _fieldName)
 {
+    if(this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysValid)
+        return;
+    if(this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysInvalid)
+        throw exRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is allways invalid").arg(_fieldName));
+
     if(this->Data->IsOptional == false && this->Data->isEmpty(_value))
         throw exRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName));
 
@@ -139,12 +148,8 @@ ADD_NEW_GENERIC_FIELDVALIDATOR(even);
 ADD_NEW_GENERIC_FIELDVALIDATOR(negative);
 ADD_NEW_GENERIC_FIELDVALIDATOR(positive);
 
-QFieldValidator& QFieldValidator::allwaysValid(){
-    this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllwaysValid;;return *this;
-}
-QFieldValidator& QFieldValidator::allwaysInvalid(){
-    this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllwaysInvalid;;return *this;
-}
+QFieldValidator& QFieldValidator::allwaysValid(){this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllwaysValid;;return *this;}
+QFieldValidator& QFieldValidator::allwaysInvalid(){this->Data->Criteria = QFieldValidatorPrivate::CRITERIA_AllwaysInvalid;;return *this;}
 ADD_NEW_GENERIC_FIELDVALIDATOR(arrayType);
 ADD_NEW_GENERIC_FIELDVALIDATOR(objectType);
 
@@ -162,6 +167,7 @@ ADD_NEW_GENERIC_FIELDVALIDATOR(url);
 ADD_NEW_GENERIC_FIELDVALIDATOR(date);
 ADD_NEW_GENERIC_FIELDVALIDATOR(time);
 ADD_NEW_GENERIC_FIELDVALIDATOR(dateTime);
+ADD_NEW_GENERIC_FIELDVALIDATOR(ipv4);
 
 ADD_NEW_GENERIC_FIELDVALIDATOR(emailNotFake);
 ADD_NEW_GENERIC_FIELDVALIDATOR(languageCode);

@@ -134,6 +134,7 @@ public:
     QFieldValidator& time();
     QFieldValidator& dateTime();
     QFieldValidator& url();
+    QFieldValidator& ipv4();
     QFieldValidator& md5();
     QFieldValidator& languageCode();
     QFieldValidator& email();

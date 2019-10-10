@@ -97,6 +97,7 @@ DEFINE_GENERIC_VALIDATOR(time);
 DEFINE_GENERIC_VALIDATOR(dateTime);
 
 DEFINE_GENERIC_VALIDATOR(url);
+DEFINE_GENERIC_VALIDATOR(ipv4);
 DEFINE_GENERIC_VALIDATOR(md5);
 
 class mobile: public intfValidator{public: mobile(bool _c) : MandatoryCountry(_c){;} QString validate(const QVariant& _value, const QString& _fieldName); private: bool MandatoryCountry;};
