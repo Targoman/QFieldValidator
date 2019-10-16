@@ -136,6 +136,7 @@ public:
     QFieldValidator& url();
     QFieldValidator& ipv4();
     QFieldValidator& md5();
+    QFieldValidator& base64Image();
     QFieldValidator& languageCode();
     QFieldValidator& email();
     QFieldValidator& emailNotFake();
