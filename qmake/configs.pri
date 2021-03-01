@@ -7,9 +7,11 @@
 #   terms of BSD License 2.0.
 ################################################################################
 PRJ_BASE_DIR=$$absolute_path(..)
-VersionFile=$$PRJ_BASE_DIR/version.pri
-!exists($$VersionFile): error("**** libsrc: Unable to find version info file $$VersionFile ****")
-include ($$VersionFile)
+!defined(VERSION, var){
+    VersionFile=$$PRJ_BASE_DIR/version.pri
+    !exists($$VersionFile): error("**** libsrc: Unable to find version info file $$VersionFile ****")
+    include ($$VersionFile)
+}
 
 !defined(ProjectName, var): error(ProjectName not specified)
 !defined(VERSION, var): error(ProjectVERSION not specified)

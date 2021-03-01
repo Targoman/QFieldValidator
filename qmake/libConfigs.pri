@@ -10,8 +10,8 @@ CONFIG_TYPE="library"
 include (./configs.pri)
 
 TEMPLATE = lib
-defined(LibName): TARGET = $$LibName
-!defined(LibName): TARGET = $$ProjectName
+defined(LibName, var): TARGET = $$LibName
+!defined(LibName, var): TARGET = $$ProjectName
 
 QMAKE_CXXFLAGS_RELEASE += -fPIC
 QMAKE_CXXFLAGS_DEBUG += -fPIC
@@ -32,7 +32,11 @@ DESTDIR      = $$BaseLibraryFolder
 
 include(./common.pri)
 
-QMAKE_POST_LINK += $$PRJ_BASE_DIR/qmake/linuxPostBuild.sh lib$$ProjectName $$BaseLibraryIncludeFolder $$BaseConfigFolder
+defined(LIB_PREFIX, var){
+    QMAKE_POST_LINK += $$PRJ_BASE_DIR/qmake/linuxPostBuild.sh $$LIB_PREFIX $$BaseLibraryIncludeFolder $$BaseConfigFolder
+}else{
+    QMAKE_POST_LINK += $$PRJ_BASE_DIR/qmake/linuxPostBuild.sh lib$$ProjectName $$BaseLibraryIncludeFolder $$BaseConfigFolder
+}
 
 include(./install.pri)
 
