@@ -1,20 +1,10 @@
 ################################################################################
-#   QFieldValidator: A simple but usefull field validation library
+#   QBuildSystem
 #
-#   Copyright 2018-2019 by Targoman Intelligent Processing <http://tip.co.ir>
+#   Copyright(c) 2021 by Targoman Intelligent Processing <http://tip.co.ir>
 #
-#   QFieldValidator is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU Lesser General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#   (at your option) any later version.
-#
-#   QFieldValidator is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU Lesser General Public License for more details.
-#
-#   You should have received a copy of the GNU Lesser General Public License
-#   along with Targoman. If not, see <http://www.gnu.org/licenses/>.
+#   Redistribution and use in source and binary forms are allowed under the
+#   terms of BSD License 2.0.
 ################################################################################
 !contains(CONFIG, no_install) {
     INCLUDE_PREFIX = $$[QT_INSTALL_HEADERS]/
@@ -30,9 +20,9 @@
             }
     }
 
-    PRJDIR = $${dirname(PWD)}
+    PRJ_BASE_DIR = $${dirname(PWD)}
     for(header, DIST_HEADERS) {
-      relPath = $${relative_path($$header, $$PRJDIR)}
+      relPath = $${relative_path($$header, $$PRJ_BASE_DIR)}
       path = $${INCLUDE_PREFIX}/$${dirname(relPath)}
       eval(headers_$${path}.files += $$relPath)
       eval(headers_$${path}.path = $$path)
