@@ -21,7 +21,7 @@
  */
 #include <QSet>
 #include "CountryBasedValidators.h"
-#include "3rdParty/ISO639/ISO639.h"
+#include "ISO639.h"
 
 namespace Validators{
 namespace Private {
