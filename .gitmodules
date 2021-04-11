@@ -1,3 +1,6 @@
 [submodule "3rdParty/ISO639"]
 	path = 3rdParty/ISO639
 	url = https://github.com/Targoman/ISO639.git
+[submodule "3rdParty/QBuildSystem"]
+	path = 3rdParty/QBuildSystem
+	url = https://github.com/Targoman/QBuildSystem.git
