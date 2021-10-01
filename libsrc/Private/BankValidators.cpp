@@ -43,9 +43,19 @@ QString creditCard::validate(const QVariant& _value, const QString& _fieldName) 
     return Private::rxValidCreditCards.value(this->Type).match(_value.toString().replace(Private::rxExtraChars, "")).hasMatch() ? QString() : createErrorString(creditCard, _fieldName);
 }
 
+/*
+ * The IBAN number consists of a two-letter country code, followed by two check digits, and up to thirty-five alphanumeric
+ * characters. These alphanumeric characters are known as the basic bank account number (BBAN). It is up to the banking
+ * association of each country to determine which BBAN they will select as the standard for that country's bank accounts.
+ * However, only European banks use IBAN, although the practice is becoming popular in other countries.
+*/
 QString iban::validate(const QVariant& _value, const QString& _fieldName){
-    Q_UNUSED(_value); Q_UNUSED(_fieldName);
-    return "Not Implememted yet";
+//    Q_UNUSED(_value); Q_UNUSED(_fieldName);
+//    return "iban validator Not Implememted yet";
+
+    return QRegularExpression("^[a-zA-Z]{2}\\d{2}[0-9a-zA-Z]{1,35}$").match(_value.toString().replace(Private::rxExtraChars, "")).hasMatch()
+        ? QString() : createErrorString(creditCard, _fieldName);
+
     //return Private::rxValidCreditCards.value(this->Type).match(_value.toString().replace(Private::rxExtraChars, "")).hasMatch() ? QString() : createErrorString(creditCard, _fieldName);
 }
 
