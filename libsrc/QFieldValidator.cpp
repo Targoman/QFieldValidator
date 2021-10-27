@@ -18,7 +18,8 @@
  ********************************************************************************/
 /**
  * @author S.Mehran M.Ziabary <ziabary@targoman.com>
-*/
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
+ */
 
 #include "QFieldValidator.h"
 #include <QRegularExpression>
@@ -210,7 +211,8 @@ QFieldValidator& QFieldValidator::idCard(const QString &_country){
 }
 
 QFieldValidator& QFieldValidator::mobile(bool _mandatoryCountryCode){
-    this->Data->SingleValidators.push_back(new Validators::mobile(_mandatoryCountryCode));return *this;
+//    this->Data->SingleValidators.push_back(new Validators::mobile(_mandatoryCountryCode));return *this;
+    return QFieldValidator::phone(true, _mandatoryCountryCode);
 }
 QFieldValidator& QFieldValidator::phone(bool _mandatoryProvinceCode, bool _mandatoryCountryCode){
     this->Data->SingleValidators.push_back(new Validators::phone(_mandatoryProvinceCode, _mandatoryCountryCode));return *this;

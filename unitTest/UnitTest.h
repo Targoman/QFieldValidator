@@ -18,6 +18,7 @@
  *******************************************************************************/
  /**
  * @author S. Mehran M. Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
 #ifndef UNITTEST_H
@@ -33,6 +34,7 @@ private slots:
     void GenericValidators();
     void ObjectValidators();
     void EmailValidators();
+    void PhoneValidators();
     void BankValidators();
     void CountryBasedValidators();
     void complexValidators();

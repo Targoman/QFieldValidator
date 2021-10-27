@@ -18,14 +18,15 @@
  *******************************************************************************/
  /**
  * @author S. Mehran M. Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
+
 #include "UnitTest.h"
 #include "QFieldValidator.h"
 
 #define VERIFY_VALIDATOR(_validator, _trueValue, _falseValue) \
     QVERIFY(QFieldValidator()._validator.isValid(_trueValue)); \
     QVERIFY(QFieldValidator()._validator.isValid(_falseValue) == false)
-
 
 void UnitTest::GenericValidators()
 {
@@ -122,6 +123,27 @@ void UnitTest::EmailValidators()
     VERIFY_VALIDATOR(emailJustDomains({"gmail.com"}), "test@gmail.com", "babadd@hotmail.com");
     VERIFY_VALIDATOR(emailNotDomains({"gmail.com"}), "test@hotmail.com", "babadd@gmail.com");
     VERIFY_VALIDATOR(emailNotDomains({"gmail.com"}, true), "test@hotmail.com", "test@4warding.com");
+}
+
+void UnitTest::PhoneValidators()
+{
+    QVERIFY(QFieldValidator().phone().isValid("aaaaaa") == false);
+
+    QVERIFY(QFieldValidator().phone().isValid("88882233"));
+    QVERIFY(QFieldValidator().phone().isValid("2188882233"));
+    QVERIFY(QFieldValidator().phone().isValid("02188882233"));
+    QVERIFY(QFieldValidator().phone().isValid("00982188882233"));
+    QVERIFY(QFieldValidator().phone().isValid("+982188882233"));
+
+    QVERIFY(QFieldValidator().phone().isValid("09121234567"));
+    QVERIFY(QFieldValidator().phone().isValid("9121234567"));
+//    QVERIFY(QFieldValidator().phone().isValid("9121") == false);
+
+    QVERIFY(QFieldValidator().phone().isValid("+989121234567"));
+//    QVERIFY(QFieldValidator().phone().isValid("+9809121234567") == false);
+
+    QVERIFY(QFieldValidator().phone().isValid("00989121234567"));
+//    QVERIFY(QFieldValidator().phone().isValid("009809121234567") == false);
 }
 
 void UnitTest::BankValidators()
