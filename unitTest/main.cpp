@@ -21,23 +21,6 @@
  * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
-#ifndef UNITTEST_H
-#define UNITTEST_H
+#include "UnitTest.hpp"
 
-#include <QtTest/QtTest>
-
-class UnitTest: public QObject
-{
-    Q_OBJECT
-
-private slots:
-    void GenericValidators();
-    void ObjectValidators();
-    void EmailValidators();
-    void PhoneValidators();
-    void BankValidators();
-    void CountryBasedValidators();
-    void complexValidators();
-};
-
-#endif // UNITTEST_H
+QTEST_MAIN(UnitTest)
