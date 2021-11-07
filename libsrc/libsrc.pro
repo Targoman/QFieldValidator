@@ -9,35 +9,36 @@
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 DIST_HEADERS += \
-    Exceptions.h \
-    PhoneNumberUtil.hpp \
-    QFieldValidator.h \
+    libQFieldValidator/Exceptions.h \
+    libQFieldValidator/PhoneNumberUtil.hpp \
+    libQFieldValidator/QFieldValidator.h
 
 PRIVATE_HEADERS += \
-    Private/intfValidator.hpp \
-    Private/QFieldValidatorPrivate.h \
-    Private/GenericValidators.h \
-    Private/ObjectValidators.h \
-    Private/CountryBasedValidators.h \
-    Private/EmailValidators.h \
-    Private/BankValidators.h \
+    libQFieldValidator/Private/intfValidator.hpp \
+    libQFieldValidator/Private/QFieldValidatorPrivate.h \
+    libQFieldValidator/Private/GenericValidators.h \
+    libQFieldValidator/Private/ObjectValidators.h \
+    libQFieldValidator/Private/CountryBasedValidators.h \
+    libQFieldValidator/Private/EmailValidators.h \
+    libQFieldValidator/Private/BankValidators.h
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
-    Private/QFieldValidatorPrivate.cpp \
-    Private/GenericValidators.cpp \
-    Private/ObjectValidators.cpp \
-    Private/CountryBasedValidators.cpp \
-    Private/EmailValidators.cpp \
-    Private/BankValidators.cpp \
-    Exceptions.cpp \
-    QFieldValidator.cpp \
+    libQFieldValidator/Private/QFieldValidatorPrivate.cpp \
+    libQFieldValidator/Private/GenericValidators.cpp \
+    libQFieldValidator/Private/ObjectValidators.cpp \
+    libQFieldValidator/Private/CountryBasedValidators.cpp \
+    libQFieldValidator/Private/EmailValidators.cpp \
+    libQFieldValidator/Private/BankValidators.cpp \
+    libQFieldValidator/Exceptions.cpp \
+    libQFieldValidator/QFieldValidator.cpp \
+    libID.cpp
 
 OTHER_FILES += \
 
 LIBS += \
     -lprotobuf \
-    -lphonenumber \
+    -lphonenumber
 
 ################################################################################
 include($$QBUILD_PATH/templates/libConfigs.pri)

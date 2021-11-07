@@ -30,7 +30,7 @@
 #include <string>
 using namespace std;
 
-#include "libsrc/PhoneNumberUtil.hpp"
+#include "libsrc/libQFieldValidator/PhoneNumberUtil.hpp"
 using namespace Targoman;
 
 #define QVERIFY_FALSE(statement) QVERIFY(statement == false)
