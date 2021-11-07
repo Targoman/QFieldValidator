@@ -24,6 +24,9 @@
 #ifndef PHONENUMBERUTIL_HPP
 #define PHONENUMBERUTIL_HPP
 
+#include <QString>
+#include "Exceptions.h"
+
 #include <string>
 using namespace std;
 
@@ -58,6 +61,39 @@ public:
             return false;
 
         return i18n::phonenumbers::PhoneNumberUtil::IsPossibleNumberForType(number_proto, type);
+    }
+
+    static QString GetErrorTypeAsString(const ErrorType& _errorType)
+    {
+        switch (_errorType)
+        {
+            case ErrorType::INVALID_COUNTRY_CODE_ERROR:
+                return "Invalid Country Code";
+            case ErrorType::NOT_A_NUMBER:
+                return "Not A Number";
+            case ErrorType::TOO_SHORT_AFTER_IDD:
+                return "Too Short After IDD";
+            case ErrorType::TOO_SHORT_NSN:
+                return "Too Short NSN";
+            case ErrorType::TOO_LONG_NSN:
+                return "Too Long NSN";
+            default:
+                return "Unknown Error";
+        }
+    }
+
+    static QString NormalizePhoneNumber(QString _number, const QString& _defCountry="IR")
+    {
+        PhoneNumberUtil* phoneNumberUtil = (PhoneNumberUtil*)PhoneNumberUtil::GetInstance();
+
+        i18n::phonenumbers::PhoneNumber number_proto;
+        PhoneNumberUtil::ErrorType ret = phoneNumberUtil->Parse(_number.toStdString(), _defCountry.toStdString(), &number_proto);
+        if (ret != NO_PARSING_ERROR)
+            throw exQFieldValidator(QString("Error in parsing phone number: %1").arg(GetErrorTypeAsString(ret)));
+
+        string formatted_number;
+        phoneNumberUtil->Format(number_proto, i18n::phonenumbers::PhoneNumberUtil::PhoneNumberFormat::E164, &formatted_number);
+        return formatted_number.c_str();
     }
 
 };

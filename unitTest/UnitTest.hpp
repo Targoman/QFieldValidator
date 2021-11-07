@@ -253,9 +253,7 @@ private slots:
         qDebug() << number_proto.country_code();
         qDebug() << number_proto.national_number();
 
-        string formatted_number;
-        phoneNumberUtil->Format(number_proto, i18n::phonenumbers::PhoneNumberUtil::PhoneNumberFormat::E164, &formatted_number);
-        qDebug() << formatted_number.c_str();
+        qDebug() << PhoneNumberUtil::NormalizePhoneNumber("2188776655");
     }
 
 };

@@ -13,6 +13,10 @@ HEADERS +=
 SOURCES += \
     main.cpp \
 
+LIBS += \
+    -lprotobuf \
+    -lphonenumber \
+
 ################################################################################
 include($$QBUILD_PATH/templates/testConfigs.pri)
 

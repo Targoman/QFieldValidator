@@ -9,8 +9,9 @@
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 DIST_HEADERS += \
-    QFieldValidator.h \
+    Exceptions.h \
     PhoneNumberUtil.hpp \
+    QFieldValidator.h \
 
 PRIVATE_HEADERS += \
     Private/intfValidator.hpp \
@@ -23,15 +24,20 @@ PRIVATE_HEADERS += \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
-    QFieldValidator.cpp \
     Private/QFieldValidatorPrivate.cpp \
     Private/GenericValidators.cpp \
     Private/ObjectValidators.cpp \
     Private/CountryBasedValidators.cpp \
     Private/EmailValidators.cpp \
     Private/BankValidators.cpp \
+    Exceptions.cpp \
+    QFieldValidator.cpp \
 
 OTHER_FILES += \
+
+LIBS += \
+    -lprotobuf \
+    -lphonenumber \
 
 ################################################################################
 include($$QBUILD_PATH/templates/libConfigs.pri)

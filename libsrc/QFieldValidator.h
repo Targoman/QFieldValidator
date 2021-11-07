@@ -18,38 +18,21 @@
  *******************************************************************************/
 /**
  * @author S.Mehran M.Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
 #ifndef QFIELDVALIDATOR_H
 #define QFIELDVALIDATOR_H
 
 #include <QString>
-#include <QException>
 #include <QVariant>
+#include <QSharedDataPointer>
 
 class QFieldValidatorPrivate;
 
 class QFieldValidator
 {
 public:
-    class exQFieldValidator : public QException {
-    public:
-        exQFieldValidator(const QString& _message);
-        const char* what() const _GLIBCXX_USE_NOEXCEPT;
-        virtual ~exQFieldValidator();
-    private:
-      QByteArray Message;
-    };
-
-    class exRequiredParam : public exQFieldValidator{
-        public: exRequiredParam(const QString& _message);
-        virtual ~exRequiredParam();
-    };
-    class exInvalidValue : public exQFieldValidator{
-        public: exInvalidValue(const QString& _message);
-        virtual ~exInvalidValue();
-    };
-
     struct CreditCards{
         typedef enum {
             Any,
@@ -161,6 +144,3 @@ private:
 #define QFV QFieldValidator()
 
 #endif // QFIELDVALIDATOR_H
-
-
-
