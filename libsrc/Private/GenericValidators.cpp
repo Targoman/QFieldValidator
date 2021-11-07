@@ -27,7 +27,10 @@
 #include <QUrl>
 #include <QDateTime>
 
-namespace Validators{
+#include "libsrc/PhoneNumberUtil.hpp"
+using namespace Targoman;
+
+namespace Validators {
 
 QString asciiAlNum::validate(const QVariant& _value,  const QString& _fieldName)  {
     static QRegularExpression Regex("^[\\w\\d]+$", QRegularExpression::CaseInsensitiveOption);
@@ -155,28 +158,24 @@ QString matches::validate(const QVariant& _value, const QString& _fieldName){
                 (_fieldName.isEmpty() ? QString("must match: %2").arg(this->Regex.pattern()) : QString("'%1' must match: %2").arg(_fieldName, this->Regex.pattern()));
 }
 
-//QString mobile::validate(const QVariant& _value, const QString& _fieldName)
-//{
-//    static QRegularExpression NoCodeRegex("^0[0-9]{10}$");
-//    static QRegularExpression WithCodeRegex("^[+]?[0-9]{2,3}[0-9]{10}$");
+QString mobile::validate(const QVariant& _value, const QString& _fieldName)
+{
+    PhoneNumberUtil* phoneNumberUtil = (PhoneNumberUtil*)PhoneNumberUtil::GetInstance();
 
-//    const QRegularExpression& Regex = this->MandatoryCountry ? WithCodeRegex : NoCodeRegex;
-
-//    return Regex.match(_value.toString().replace(Private::rxExtraChars, "")).hasMatch() ? QString() :createErrorString(mobile, _fieldName);
-//}
+    ///TODO: make country code paremetric
+    return phoneNumberUtil->IsPossibleNumberForType(_value.toString().toStdString(), "IR", PhoneNumberUtil::MOBILE)
+        ? QString()
+        : createErrorString(mobile, _fieldName);
+}
 
 QString phone::validate(const QVariant& _value, const QString& _fieldName)
 {
-//    static QRegularExpression NoCodeRegex("^[\\+]?[0-9]{10}$");
-//    static QRegularExpression WithProvinceRegex("^[\\+]?0[0-9]{10}$");
-//    static QRegularExpression FullCodeRegex("^[\\+]?[0-9]{2,3}[0-9]{10}$");
+    PhoneNumberUtil* phoneNumberUtil = (PhoneNumberUtil*)PhoneNumberUtil::GetInstance();
 
-//    const QRegularExpression& Regex = this->MandatoryCountry ? FullCodeRegex : this->MandatoryProvince ? WithProvinceRegex : NoCodeRegex;
-
-    static QRegularExpression CodeRegex(R"(^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$)", QRegularExpression::CaseInsensitiveOption);
-    const QRegularExpression& Regex = CodeRegex;
-
-    return Regex.match(_value.toString().replace(Private::rxExtraChars, "")).hasMatch() ? QString() :createErrorString(mobile, _fieldName);
+    ///TODO: make country code paremetric
+    return phoneNumberUtil->IsPossibleNumberForString(_value.toString().toStdString(), "IR")
+        ? QString()
+        : createErrorString(phone, _fieldName);
 }
 
 QString minValue::validate(const QVariant& _value, const QString& _fieldName)

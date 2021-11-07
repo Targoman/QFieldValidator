@@ -16,16 +16,15 @@
 #   You should have received a copy of the GNU Lesser General Public License
 #   along with Targoman. If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
-ProjectName="QFieldValidator"
-VERSION=1.0.0
+ProjectName = "QFieldValidator"
+VERSION = 1.0.0
 
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-
 # Qt5.5.1 on OSX needs both c++11 and c++14!! the c++14 is not enough
-QMAKE_CXXFLAGS += -std=c++11 -std=c++14
-CONFIGS += c++11 c++14
+QMAKE_CXXFLAGS += -std=c++11 -std=c++14 -std=c++17
+CONFIGS += c++11 c++14 c++17
 
 QT += core
 QT -= gui
 
 LIBS +=
-

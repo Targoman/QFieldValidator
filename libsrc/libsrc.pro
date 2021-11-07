@@ -10,6 +10,7 @@
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 DIST_HEADERS += \
     QFieldValidator.h \
+    PhoneNumberUtil.hpp \
 
 PRIVATE_HEADERS += \
     Private/intfValidator.hpp \
@@ -28,10 +29,15 @@ SOURCES += \
     Private/ObjectValidators.cpp \
     Private/CountryBasedValidators.cpp \
     Private/EmailValidators.cpp \
-    Private/BankValidators.cpp
+    Private/BankValidators.cpp \
 
 OTHER_FILES += \
 
 ################################################################################
 include($$QBUILD_PATH/templates/libConfigs.pri)
 
+!exists(/usr/lib64/libphonenumber.so*) {
+    error (**** Unable to find linphonenumber.so ****\n\
+    zypper ar -f https://download.opensuse.org/repositories/devel:/libraries:/c_c++/openSUSE_Leap_15.2/ devel_libraries\n\
+    zypper install libphonenumber8 libphonenumber-devel)
+}

@@ -30,44 +30,14 @@
 #include <string>
 using namespace std;
 
-#include "phonenumbers/phonenumberutil.h"
-//using namespace i18n::phonenumbers;
+#include "libsrc/PhoneNumberUtil.hpp"
+using namespace Targoman;
 
 #define QVERIFY_FALSE(statement) QVERIFY(statement == false)
 
 #define VERIFY_VALIDATOR(_validator, _trueValue, _falseValue) \
     QVERIFY(QFieldValidator()._validator.isValid(_trueValue)); \
     QVERIFY_FALSE(QFieldValidator()._validator.isValid(_falseValue))
-
-class PhoneNumberUtil : public i18n::phonenumbers::PhoneNumberUtil
-{
-public:
-    bool IsValidNumberForString(
-        const string &number,
-        const string &region_dialing_from) const
-    {
-        i18n::phonenumbers::PhoneNumber number_proto;
-
-        if (Parse(number, region_dialing_from, &number_proto) != NO_PARSING_ERROR)
-            return false;
-
-        return i18n::phonenumbers::PhoneNumberUtil::IsValidNumberForRegion(number_proto, region_dialing_from);
-    }
-
-    bool IsPossibleNumberForType(
-        const string &number,
-        const string &region_dialing_from,
-        PhoneNumberType type) const
-    {
-        i18n::phonenumbers::PhoneNumber number_proto;
-
-        if (Parse(number, region_dialing_from, &number_proto) != NO_PARSING_ERROR)
-            return false;
-
-        return i18n::phonenumbers::PhoneNumberUtil::IsPossibleNumberForType(number_proto, type);
-    }
-
-};
 
 class UnitTest: public QObject
 {
@@ -241,16 +211,16 @@ private slots:
 
         QVERIFY(QFieldValidator().phone().isValid("09121234567"));
         QVERIFY(QFieldValidator().phone().isValid("9121234567"));
-    //    QVERIFY_FALSE(QFieldValidator().phone().isValid("9121"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("9121"));
 
         QVERIFY(QFieldValidator().phone().isValid("+989121234567"));
-    //    QVERIFY_FALSE(QFieldValidator().phone().isValid("+9809121234567"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("+9809121234567"));
 
         QVERIFY(QFieldValidator().phone().isValid("00989121234567"));
-    //    QVERIFY_FALSE(QFieldValidator().phone().isValid("009809121234567"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("009809121234567"));
     }
 
-    //add repo: https://download.opensuse.org/repositories/devel:/libraries:/c_c++/openSUSE_Leap_15.2
+    //sudo zypper ar -f https://download.opensuse.org/repositories/devel:/libraries:/c_c++/openSUSE_Leap_15.2/ devel_libraries
     //sudo zypper install libphonenumber8 libphonenumber-devel
     void libPhoneNumberValidators()
     {
@@ -262,15 +232,30 @@ private slots:
         QVERIFY_FALSE(phoneNumberUtil->IsPossibleNumberForString("dial p for pizza", "US"));
         QVERIFY_FALSE(phoneNumberUtil->IsPossibleNumberForString("123-000", "US"));
 
+        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("8877 6655", "IR"));
+        QVERIFY(phoneNumberUtil->IsValidNumberForString("21 8877 6655", "IR"));
+        QVERIFY(phoneNumberUtil->IsValidNumberForString("021 8877 6655", "IR"));
+//        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("+98 021 8877 6655", "IR"));
+        QVERIFY(phoneNumberUtil->IsValidNumberForString("+98 21 8877 6655", "IR"));
+
+        QVERIFY(phoneNumberUtil->IsValidNumberForString("912 345 6789", "IR"));
+        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("912 345 67890", "IR"));
+        QVERIFY(phoneNumberUtil->IsValidNumberForString("0912 345 6789", "IR"));
+        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("0912 345 67890", "IR"));
         QVERIFY(phoneNumberUtil->IsValidNumberForString("+98 912 345 6789", "IR"));
+//        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("+98 0912 345 6789", "IR"));
         QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("+98 912 345 6789", "US"));
 
         QVERIFY(phoneNumberUtil->IsPossibleNumberForType("+98 912 345 6789", "IR", PhoneNumberUtil::MOBILE));
 
         i18n::phonenumbers::PhoneNumber number_proto;
-        qDebug() << phoneNumberUtil->Parse("88776655", "IR", &number_proto);
+        qDebug() << phoneNumberUtil->Parse("2188776655", "IR", &number_proto);
         qDebug() << number_proto.country_code();
         qDebug() << number_proto.national_number();
+
+        string formatted_number;
+        phoneNumberUtil->Format(number_proto, i18n::phonenumbers::PhoneNumberUtil::PhoneNumberFormat::E164, &formatted_number);
+        qDebug() << formatted_number.c_str();
     }
 
 };

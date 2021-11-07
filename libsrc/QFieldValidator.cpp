@@ -211,8 +211,8 @@ QFieldValidator& QFieldValidator::idCard(const QString &_country){
 }
 
 QFieldValidator& QFieldValidator::mobile(bool _mandatoryCountryCode){
-//    this->Data->SingleValidators.push_back(new Validators::mobile(_mandatoryCountryCode));return *this;
-    return QFieldValidator::phone(true, _mandatoryCountryCode);
+    this->Data->SingleValidators.push_back(new Validators::mobile(_mandatoryCountryCode));return *this;
+//    return QFieldValidator::phone(true, _mandatoryCountryCode);
 }
 QFieldValidator& QFieldValidator::phone(bool _mandatoryProvinceCode, bool _mandatoryCountryCode){
     this->Data->SingleValidators.push_back(new Validators::phone(_mandatoryProvinceCode, _mandatoryCountryCode));return *this;
