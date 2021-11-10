@@ -27,12 +27,6 @@
 #include <QtTest/QtTest>
 #include "QFieldValidator.h"
 
-#include <string>
-using namespace std;
-
-#include "libsrc/libQFieldValidator/PhoneNumberUtil.hpp"
-using namespace Targoman;
-
 #define QVERIFY_FALSE(statement) QVERIFY(statement == false)
 
 #define VERIFY_VALIDATOR(_validator, _trueValue, _falseValue) \
@@ -218,43 +212,68 @@ private slots:
 
         QVERIFY(QFieldValidator().phone().isValid("00989121234567"));
 //        QVERIFY_FALSE(QFieldValidator().phone().isValid("009809121234567"));
+
+        //--------------------------------
+//        QVERIFY(QFieldValidator().phone("US").isValid("+1 343 253 1234"));
+        QVERIFY_FALSE(QFieldValidator().phone("US").isValid("+1 343 253 12345"));
+        QVERIFY_FALSE(QFieldValidator().phone("US").isValid("(343) 253-00000"));
+        QVERIFY_FALSE(QFieldValidator().phone("US").isValid("dial p for pizza"));
+        QVERIFY_FALSE(QFieldValidator().phone("US").isValid("123-000"));
+
+//        QVERIFY(QFieldValidator().phone().isValid("8877 6655"));
+        QVERIFY(QFieldValidator().phone().isValid("21 8877 6655"));
+        QVERIFY(QFieldValidator().phone().isValid("021 8877 6655"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("+98 021 8877 6655"));
+        QVERIFY(QFieldValidator().phone().isValid("+98 21 8877 6655"));
+
+        QVERIFY(QFieldValidator().phone().isValid("912 345 6789"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("912 345 67890"));
+        QVERIFY(QFieldValidator().phone().isValid("0912 345 6789"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("0912 345 67890"));
+        QVERIFY(QFieldValidator().phone().isValid("+98 912 345 6789"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("+98 0912 345 6789"));
+//        QVERIFY_FALSE(QFieldValidator().phone("US").isValid("+98 912 345 6789"));
+
+        QVERIFY(QFieldValidator().mobile().isValid("+98 912 345 6789"));
     }
 
     //sudo zypper ar -f https://download.opensuse.org/repositories/devel:/libraries:/c_c++/openSUSE_Leap_15.2/ devel_libraries
     //sudo zypper install libphonenumber8 libphonenumber-devel
+    /*
     void libPhoneNumberValidators()
     {
         PhoneNumberUtil* phoneNumberUtil = (PhoneNumberUtil*)PhoneNumberUtil::GetInstance();
 
-        QVERIFY(phoneNumberUtil->IsPossibleNumberForString("+1 343 253 1234", "US"));
-        QVERIFY_FALSE(phoneNumberUtil->IsPossibleNumberForString("+1 343 253 12345", "US"));
-        QVERIFY_FALSE(phoneNumberUtil->IsPossibleNumberForString("(343) 253-00000", "US"));
-        QVERIFY_FALSE(phoneNumberUtil->IsPossibleNumberForString("dial p for pizza", "US"));
-        QVERIFY_FALSE(phoneNumberUtil->IsPossibleNumberForString("123-000", "US"));
+        QVERIFY(QFieldValidator().phone().isValid("+1 343 253 1234", "US"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("+1 343 253 12345", "US"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("(343) 253-00000", "US"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("dial p for pizza", "US"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("123-000", "US"));
 
-        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("8877 6655", "IR"));
-        QVERIFY(phoneNumberUtil->IsValidNumberForString("21 8877 6655", "IR"));
-        QVERIFY(phoneNumberUtil->IsValidNumberForString("021 8877 6655", "IR"));
-//        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("+98 021 8877 6655", "IR"));
-        QVERIFY(phoneNumberUtil->IsValidNumberForString("+98 21 8877 6655", "IR"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("8877 6655", "IR"));
+        QVERIFY(QFieldValidator().phone().isValid("21 8877 6655", "IR"));
+        QVERIFY(QFieldValidator().phone().isValid("021 8877 6655", "IR"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("+98 021 8877 6655", "IR"));
+        QVERIFY(QFieldValidator().phone().isValid("+98 21 8877 6655", "IR"));
 
-        QVERIFY(phoneNumberUtil->IsValidNumberForString("912 345 6789", "IR"));
-        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("912 345 67890", "IR"));
-        QVERIFY(phoneNumberUtil->IsValidNumberForString("0912 345 6789", "IR"));
-        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("0912 345 67890", "IR"));
-        QVERIFY(phoneNumberUtil->IsValidNumberForString("+98 912 345 6789", "IR"));
-//        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("+98 0912 345 6789", "IR"));
-        QVERIFY_FALSE(phoneNumberUtil->IsValidNumberForString("+98 912 345 6789", "US"));
+        QVERIFY(QFieldValidator().phone().isValid("912 345 6789", "IR"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("912 345 67890", "IR"));
+        QVERIFY(QFieldValidator().phone().isValid("0912 345 6789", "IR"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("0912 345 67890", "IR"));
+        QVERIFY(QFieldValidator().phone().isValid("+98 912 345 6789", "IR"));
+//        QVERIFY_FALSE(QFieldValidator().phone().isValid("+98 0912 345 6789", "IR"));
+        QVERIFY_FALSE(QFieldValidator().phone().isValid("+98 912 345 6789", "US"));
 
-        QVERIFY(phoneNumberUtil->IsPossibleNumberForType("+98 912 345 6789", "IR", PhoneNumberUtil::MOBILE));
+        QVERIFY(QFieldValidator().phone().isValid("+98 912 345 6789", "IR", PhoneNumberUtil::MOBILE));
 
         i18n::phonenumbers::PhoneNumber number_proto;
-        qDebug() << phoneNumberUtil->Parse("2188776655", "IR", &number_proto);
+        qDebug() << Validators::Phone::Parse("2188776655", "IR", &number_proto);
         qDebug() << number_proto.country_code();
         qDebug() << number_proto.national_number();
 
         qDebug() << PhoneNumberUtil::NormalizePhoneNumber("2188776655");
     }
+    */
 
 };
 

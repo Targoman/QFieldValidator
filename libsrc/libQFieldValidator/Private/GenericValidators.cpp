@@ -27,9 +27,6 @@
 #include <QUrl>
 #include <QDateTime>
 
-#include "PhoneNumberUtil.hpp"
-using namespace Targoman;
-
 namespace Validators {
 
 QString asciiAlNum::validate(const QVariant& _value,  const QString& _fieldName)  {
@@ -156,26 +153,6 @@ QString matches::validate(const QVariant& _value, const QString& _fieldName){
     return this->Regex.match(_value.toString()).hasMatch() ?
                 QString() :
                 (_fieldName.isEmpty() ? QString("must match: %2").arg(this->Regex.pattern()) : QString("'%1' must match: %2").arg(_fieldName, this->Regex.pattern()));
-}
-
-QString mobile::validate(const QVariant& _value, const QString& _fieldName)
-{
-    PhoneNumberUtil* phoneNumberUtil = (PhoneNumberUtil*)PhoneNumberUtil::GetInstance();
-
-    ///TODO: make country code paremetric
-    return phoneNumberUtil->IsPossibleNumberForType(_value.toString().toStdString(), "IR", PhoneNumberUtil::MOBILE)
-        ? QString()
-        : createErrorString(mobile, _fieldName);
-}
-
-QString phone::validate(const QVariant& _value, const QString& _fieldName)
-{
-    PhoneNumberUtil* phoneNumberUtil = (PhoneNumberUtil*)PhoneNumberUtil::GetInstance();
-
-    ///TODO: make country code paremetric
-    return phoneNumberUtil->IsPossibleNumberForString(_value.toString().toStdString(), "IR")
-        ? QString()
-        : createErrorString(phone, _fieldName);
 }
 
 QString minValue::validate(const QVariant& _value, const QString& _fieldName)

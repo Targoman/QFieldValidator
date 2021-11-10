@@ -22,7 +22,6 @@
  */
 
 #include "libQFieldValidator/Exceptions.h"
-#include "libQFieldValidator/PhoneNumberUtil.hpp"
 #include "libQFieldValidator/QFieldValidator.h"
 //Above files are included to be checked by compiler
 

@@ -32,6 +32,7 @@
 #include "Private/EmailValidators.h"
 #include "Private/CountryBasedValidators.h"
 #include "Private/BankValidators.h"
+#include "Private/PhoneValidators.h"
 #include "Exceptions.h"
 
 QFieldValidator::QFieldValidator() :
@@ -212,10 +213,9 @@ QFieldValidator& QFieldValidator::idCard(const QString &_country){
     this->Data->SingleValidators.push_back(new Validators::idCard(_country));return *this;
 }
 
-QFieldValidator& QFieldValidator::mobile(bool _mandatoryCountryCode){
-    this->Data->SingleValidators.push_back(new Validators::mobile(_mandatoryCountryCode));return *this;
-//    return QFieldValidator::phone(true, _mandatoryCountryCode);
+QFieldValidator& QFieldValidator::mobile(const QString& _country, bool _mandatoryCountryCode) {
+    this->Data->SingleValidators.push_back(new Validators::mobile(_country, _mandatoryCountryCode));return *this;
 }
-QFieldValidator& QFieldValidator::phone(bool _mandatoryProvinceCode, bool _mandatoryCountryCode){
-    this->Data->SingleValidators.push_back(new Validators::phone(_mandatoryProvinceCode, _mandatoryCountryCode));return *this;
+QFieldValidator& QFieldValidator::phone(const QString& _country, bool _mandatoryProvinceCode, bool _mandatoryCountryCode) {
+    this->Data->SingleValidators.push_back(new Validators::phone(_country, _mandatoryProvinceCode, _mandatoryCountryCode));return *this;
 }

@@ -125,8 +125,8 @@ public:
     QFieldValidator& emailNotFake();
     QFieldValidator& emailJustDomains(const QSet<QString>& _validDomains);
     QFieldValidator& emailNotDomains(const QSet<QString>& _validDomains, bool _alsoNotFake = true);
-    QFieldValidator& mobile(bool _mandatoryCountryCode = false);
-    QFieldValidator& phone(bool _mandatoryProvinceCode = true, bool _mandatoryCountryCode = false);
+    QFieldValidator& mobile(const QString& _country = "IR", bool _mandatoryCountryCode = false);
+    QFieldValidator& phone(const QString& _country = "IR", bool _mandatoryProvinceCode = true, bool _mandatoryCountryCode = false);
     QFieldValidator& idCard(const QString& _country = "IR");
     QFieldValidator& postalCode(const QString& _country = "IR");
     QFieldValidator& iban(const QString& _country = "IR");

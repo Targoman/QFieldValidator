@@ -10,7 +10,6 @@
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 DIST_HEADERS += \
     libQFieldValidator/Exceptions.h \
-    libQFieldValidator/PhoneNumberUtil.hpp \
     libQFieldValidator/QFieldValidator.h
 
 PRIVATE_HEADERS += \
@@ -20,7 +19,8 @@ PRIVATE_HEADERS += \
     libQFieldValidator/Private/ObjectValidators.h \
     libQFieldValidator/Private/CountryBasedValidators.h \
     libQFieldValidator/Private/EmailValidators.h \
-    libQFieldValidator/Private/BankValidators.h
+    libQFieldValidator/Private/BankValidators.h \
+    libQFieldValidator/Private/PhoneValidators.h
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
@@ -30,6 +30,7 @@ SOURCES += \
     libQFieldValidator/Private/CountryBasedValidators.cpp \
     libQFieldValidator/Private/EmailValidators.cpp \
     libQFieldValidator/Private/BankValidators.cpp \
+    libQFieldValidator/Private/PhoneValidators.cpp \
     libQFieldValidator/Exceptions.cpp \
     libQFieldValidator/QFieldValidator.cpp \
     libID.cpp
