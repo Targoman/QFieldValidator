@@ -1,4 +1,4 @@
-################################################################################
+/************************************************************************************
 #   QFieldValidator: A simple but usefull field validation library
 #
 #   Copyright 2018-2019 by Targoman Intelligent Processing <http://tip.co.ir>
@@ -15,16 +15,12 @@
 #
 #   You should have received a copy of the GNU Lesser General Public License
 #   along with Targoman. If not, see <http://www.gnu.org/licenses/>.
-################################################################################
-ProjectName="QFieldValidator"
-VERSION=1.0.0
+ *******************************************************************************/
+ /**
+ * @author S. Mehran M. Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
+ */
 
-#+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-
-# Qt5.5.1 on OSX needs both c++11 and c++14!! the c++14 is not enough
-QMAKE_CXXFLAGS += -std=c++11 -std=c++14 -std=c++17
-CONFIGS += c++11 c++14 c++17
+#include "UnitTest.hpp"
 
-QT += core
-QT -= gui
-
-LIBS +=
+QTEST_MAIN(UnitTest)

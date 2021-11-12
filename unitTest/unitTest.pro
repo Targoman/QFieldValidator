@@ -8,12 +8,22 @@
 ################################################################################
 
 HEADERS += \
-    UnitTest.h
+    UnitTest.hpp \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
-    UnitTest.cpp
+    main.cpp \
+
+# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
+LIBS += \
+    -lprotobuf \
+    -lphonenumber \
 
 ################################################################################
 include($$QBUILD_PATH/templates/unitTestConfigs.pri)
 
+!exists(/usr/lib64/libphonenumber.so*) {
+    error (**** Unable to find linphonenumber.so ****\n\
+    zypper ar -f https://download.opensuse.org/repositories/devel:/libraries:/c_c++/openSUSE_Leap_15.2/ devel_libraries\n\
+    zypper install libphonenumber8 libphonenumber-devel)
+}

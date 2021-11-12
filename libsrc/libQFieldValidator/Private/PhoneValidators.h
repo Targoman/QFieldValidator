@@ -16,26 +16,50 @@
 #   You should have received a copy of the GNU Lesser General Public License
 #   along with Targoman. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
- /**
- * @author S. Mehran M. Ziabary <ziabary@targoman.com>
+/**
+ * @author S.Mehran M.Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
-#ifndef UNITTEST_H
-#define UNITTEST_H
+#ifndef PHONEVALIDATORS_H
+#define PHONEVALIDATORS_H
 
-#include <QtTest/QtTest>
+#include "intfValidator.hpp"
 
-class UnitTest: public QObject
+namespace Validators {
+
+class mobile : public intfValidator
 {
-    Q_OBJECT
+public:
+    mobile(const QString& _country = "IR", bool _c = false) :
+        Country(_country),
+        MandatoryCountry(_c)
+    {}
 
-private slots:
-    void GenericValidators();
-    void ObjectValidators();
-    void EmailValidators();
-    void BankValidators();
-    void CountryBasedValidators();
-    void complexValidators();
+    QString validate(const QVariant& _value, const QString& _fieldName);
+
+private:
+    QString Country;
+    bool MandatoryCountry;
 };
 
-#endif // UNITTEST_H
+class phone : public intfValidator
+{
+public:
+    phone(const QString& _country = "IR", bool _p = true, bool _c = false) :
+        Country(_country),
+        MandatoryCountry(_c),
+        MandatoryProvince(_p)
+    {}
+
+    QString validate(const QVariant& _value, const QString& _fieldName);
+
+private:
+    QString Country;
+    bool MandatoryCountry;
+    bool MandatoryProvince;
+};
+
+} //namespace Validators
+
+#endif // PHONEVALIDATORS_H

@@ -18,7 +18,8 @@
  ********************************************************************************/
 /**
  * @author S.Mehran M.Ziabary <ziabary@targoman.com>
-*/
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
+ */
 
 #include "QFieldValidator.h"
 #include <QRegularExpression>
@@ -31,6 +32,8 @@
 #include "Private/EmailValidators.h"
 #include "Private/CountryBasedValidators.h"
 #include "Private/BankValidators.h"
+#include "Private/PhoneValidators.h"
+#include "Exceptions.h"
 
 QFieldValidator::QFieldValidator() :
     Data(new QFieldValidatorPrivate)
@@ -63,17 +66,18 @@ bool QFieldValidator::isValid(const QVariant& _value, const QString& _fieldName)
 
 void QFieldValidator::validate(const QVariant& _value, const QString& _fieldName)
 {
-    if(this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysValid)
+    if (this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysValid)
         return;
-    if(this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysInvalid)
-        throw exRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is allways invalid").arg(_fieldName));
 
-    if(this->Data->IsOptional == false && this->Data->isEmpty(_value))
-        throw exRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName));
+    if (this->Data->Criteria == QFieldValidatorPrivate::CRITERIA_AllwaysInvalid)
+        throw exQFVRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is allways invalid").arg(_fieldName));
+
+    if (this->Data->IsOptional == false && this->Data->isEmpty(_value))
+        throw exQFVRequiredParam(_fieldName.isEmpty() ? "required" : QString("%1 is required").arg(_fieldName));
 
     bool IsValid = this->isValid(_value, _fieldName);
-    if(!IsValid)
-        throw exInvalidValue(this->Data->ErrorMessage);
+    if (!IsValid)
+        throw exQFVInvalidValue(this->Data->ErrorMessage);
 }
 
 const QString& QFieldValidator::errorMessage()
@@ -209,20 +213,9 @@ QFieldValidator& QFieldValidator::idCard(const QString &_country){
     this->Data->SingleValidators.push_back(new Validators::idCard(_country));return *this;
 }
 
-QFieldValidator& QFieldValidator::mobile(bool _mandatoryCountryCode){
-    this->Data->SingleValidators.push_back(new Validators::mobile(_mandatoryCountryCode));return *this;
+QFieldValidator& QFieldValidator::mobile(const QString& _country, bool _mandatoryCountryCode) {
+    this->Data->SingleValidators.push_back(new Validators::mobile(_country, _mandatoryCountryCode));return *this;
 }
-QFieldValidator& QFieldValidator::phone(bool _mandatoryProvinceCode, bool _mandatoryCountryCode){
-    this->Data->SingleValidators.push_back(new Validators::phone(_mandatoryProvinceCode, _mandatoryCountryCode));return *this;
+QFieldValidator& QFieldValidator::phone(const QString& _country, bool _mandatoryProvinceCode, bool _mandatoryCountryCode) {
+    this->Data->SingleValidators.push_back(new Validators::phone(_country, _mandatoryProvinceCode, _mandatoryCountryCode));return *this;
 }
-
-/**************************************************************************/
-QFieldValidator::exQFieldValidator::exQFieldValidator(const QString& _message):Message(_message.toUtf8()){;}
-const char *QFieldValidator::exQFieldValidator::what() const _GLIBCXX_USE_NOEXCEPT{return this->Message.constData();}
-
-QFieldValidator::exQFieldValidator::~exQFieldValidator(){;}
-QFieldValidator::exRequiredParam::exRequiredParam(const QString& _message):exQFieldValidator (_message){;}
-QFieldValidator::exRequiredParam::~exRequiredParam(){;}
-
-QFieldValidator::exInvalidValue::exInvalidValue(const QString& _message):exQFieldValidator(_message){;}
-QFieldValidator::exInvalidValue::~exInvalidValue(){;}
