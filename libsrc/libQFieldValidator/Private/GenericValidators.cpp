@@ -61,7 +61,7 @@ REGEX_BASED_VALIDATOR_IMPL(upperCase,    QRegularExpression("^[A-Z0-9]+$"))
 REGEX_BASED_VALIDATOR_IMPL(md5,          QRegularExpression("^[a-f0-9]{32}$", QRegularExpression::CaseInsensitiveOption))
 REGEX_BASED_VALIDATOR_IMPL(hex,          QRegularExpression("^[a-f0-9]+$", QRegularExpression::CaseInsensitiveOption))
 REGEX_BASED_VALIDATOR_IMPL(ipv4,         QRegularExpression("^(?:(?:^|\\.)(?:2(?:5[0-5]|[0-4]\\d)|1?\\d?\\d)){4}$"))
-REGEX_BASED_VALIDATOR_IMPL(base64Image,  QRegularExpression("^data:image\\/(?:jpe?g|png);base64,[a-f0-9]+$", QRegularExpression::CaseInsensitiveOption))
+REGEX_BASED_VALIDATOR_IMPL(base64Image,  QRegularExpression("^data:image\\/(?:jpe?g|png);base64,[-A-Za-z0-9+/]*={0,3}$", QRegularExpression::CaseInsensitiveOption))
 
 CONDITIONAL_VALIDATOR_IMPL(real,     bool WasOk;_value.toDouble(&WasOk);,  WasOk)
 CONDITIONAL_VALIDATOR_IMPL(integer,  bool WasOk;_value.toLongLong(&WasOk);,WasOk)
